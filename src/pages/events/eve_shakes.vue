@@ -1,0 +1,407 @@
+
+<template>
+  <div id="shake"  class="eve_two">
+    <!-- <my-header main-text="摇一摇" bg-color="#fff" text-color="#000" :shop="shop">
+      <img slot="" src="../../assets/left-gray.svg">
+    </my-header> -->
+    <magic-header :isEve="true" :titleName="LotteryInitInfo.activity && LotteryInitInfo.activity.title ? LotteryInitInfo.activity.title:摇一摇" :returnNative="$route.params.native"></magic-header>
+    <div v-bind:class="body_bg">
+    <mu-checkbox label="声音" class="demo-checkbox" v-model="isVideoOpen" @input="videoOpen" />
+      <p class="body_title hg_f">{{ promptLang }} {{  }}</p>
+      <span class="body_content">今天你还可以摇{{ LotteryInitInfo.leaveTimes }}次</span>
+      <div class="bottom">
+        <span class="bottom_title">恭喜中奖者</span>
+        <div class="bottom_body">
+          <table>
+            <tr v-for="lottery in ListLotteryWinner.lotterys">
+              <td>{{ lottery.name }}</td>
+              <td>{{ lottery.mobile }}</td>
+              <td>{{ lottery.lotteryInfo }}</td>
+            </tr>
+          </table>
+        </div>
+        <audio width="320" height="240" id="video" controls hidden>
+          <source src="http://fjdx.sc.chinaz.com/files/download/sound1/201410/5018.mp3">
+          <!--<source src="../../../static/media/shake.mp4">-->
+        </audio>
+        <div class="bottom_foot">
+          <h5 class="bottom_foot_title">活动规则</h5>
+          <div v-for="(item,index) in LotteryInitInfo.rule" :key="index">{{item}}</div>
+        </div>
+      </div>
+      <div class="bottom_bg">
+        <img src="../../assets/shakeBottom.png" width="100%" alt="">
+        <!--<span class="bot_btn sm_f bot_lf">微信分享</span>-->
+        <span class="bot_btn sm_f bot_rig" v-tap="{methods: go}">我的奖品</span>
+      </div>
+      <shopDetail v-if="!isWxPublic" :value="shop.mobile" :position="shop" :shopId="shop.id">
+          <span slot="name">{{ shop.name }}</span>
+          <span slot="address">{{ shop.address }}</span>
+      </shopDetail>
+      <div v-if="isWxPublic" class="footer">
+        	<div class="left">
+        		<div class="info-top">{{ shop.name }}</div>
+        		<div class="info-bottom">{{ shop.address }}</div>
+        	</div>
+        </div>
+      </div>
+    </div>
+    <!--<mu-dialog :open="dialog" @click="videoStart">
+      <span>摇一摇，中大奖！</span>
+      <mu-raised-button label="Disabled" class="确定" color="#f98700"/>
+    </mu-dialog>-->
+  </div>
+</template>
+<script>
+import Vue from 'vue'
+import myHeader from 'components/eve-my-head'
+import magicHeader from 'components/magicHeader'
+
+
+import shopDetail from 'components/shop-detail'
+
+
+
+export default {
+  data () {
+    return {
+      chooseBg: 'stratBg',
+      queryLotteryDate: {},
+      LotteryInitInfo: {},
+      ListLotteryWinner: {},
+      activityId: this.$route.params.activityId,
+      body_bg: 'shakeIndex',
+      promptLang: '摇一摇，得优惠',
+      shop: {},
+      dialog: true,
+      isVideoStart: true,
+      isVideoOpen: false,
+      isWxPublic:false
+    }
+  },
+  created(){
+    if(this.$.env==="wxPublic"){
+      this.isWxPublic = true
+    }
+  },
+  components: {
+    myHeader,
+    shopDetail,
+    magicHeader
+  },
+  methods: {
+    go () {
+      this.$router.push({name: 'eve_myPrize', params: {id: this.activityId}})
+    },
+    videoStart () {
+      if (this.isVideoStart) {
+        this.isVideoStart = false
+        let a = document.getElementById('video')
+        a.play()
+        
+      }
+    },
+    videoOpen (val) {
+      if (val) {
+        let a = document.getElementById('video')
+        console.log(a)
+        a.play()
+      }
+    }
+  },
+  beforeRouteEnter (to, from, next) {
+    Promise.all([
+      Vue.prototype.$.get({
+        methodName: 'LotteryInitInfo',
+        category: '1',
+        id: to.params.activityId
+      }),
+      Vue.prototype.$.get({
+        methodName: 'ListLotteryWinner',
+        category: '1',
+        id: to.params.activityId
+      })
+    ])
+    .then(result => next(vm => {
+      console.log(result)
+      vm.LotteryInitInfo = result[0].data
+      if(vm.LotteryInitInfo.rule){
+        	 vm.LotteryInitInfo.rule = vm.LotteryInitInfo.rule.split('；')
+       }
+      vm.shop = result[0].data.shop
+      vm.ListLotteryWinner = result[1].data
+      if (vm.LotteryInitInfo.state === '0') {
+        this.$.toast('稍等片刻，活动即将开始~')
+      }
+      if (vm.LotteryInitInfo.state === '2') {
+        this.$.toast('本次活动已结束~')
+      }
+    }))
+  },
+  mounted () {
+    window.scrollTo(0, 0)
+    /* eslint-disable */
+    //运动事件监听
+    if (window.DeviceMotionEvent) {
+        window.addEventListener('devicemotion',deviceMotionHandler,false);
+    }
+    //获取加速度信息
+    //通过监听上一步获取到的x, y, z 值在一定时间范围内的变化率，进行设备是否有进行晃动的判断。
+    //而为了防止正常移动的误判，需要给该变化率设置一个合适的临界值。
+    let SHAKE_THRESHOLD = 10000;
+    let last_update = 0;
+    let x, y, z, last_x = 0, last_y = 0, last_z = 0;
+    let _self = this
+    let flag = true
+    function deviceMotionHandler(eventData) {
+      if (_self.LotteryInitInfo.leaveTimes > 0) {
+        if (_self.LotteryInitInfo.state == '1') {
+            if (flag) {
+              // flag = false
+              let acceleration =eventData.accelerationIncludingGravity;
+              let curTime = new Date().getTime();
+              if ((curTime-last_update)> 60) {
+                  let diffTime = curTime -last_update;
+                  last_update = curTime;
+                  x = acceleration.x;
+                  y = acceleration.y;
+                  z = acceleration.z;
+                  let speed
+                  if (getClientInfo() == '1') {
+                    speed = (Math.abs(x +y + z - last_x - last_y - last_z) / diffTime) * 10000;
+                  } else {
+                    speed = (Math.abs(x +y + z - last_x - last_y - last_z) / diffTime) * 80000;
+                  }
+                  if (speed > SHAKE_THRESHOLD) {
+                    if(_self.$.userId){
+                      if (_self.isVideoOpen) {
+                        let a = document.getElementById('video')
+                        a.play()
+                      }
+                      flag = false
+                      _self.$.get({
+                        methodName: 'AttendLottery',
+                        category: '1',
+                        id: _self.activityId,
+                        // shopId
+                      }).then(res => {
+                        if (res.data.resultCode === '100') {
+                          _self.queryLotteryDate = res.data.prize
+                          if (_self.queryLotteryDate.name.indexOf('一次') > 0) {
+
+                          } else {
+                            if (_self.LotteryInitInfo.leaveTimes <= 0) {
+                              _self.LotteryInitInfo.leaveTimes = 0
+                            } else {
+                              _self.LotteryInitInfo.leaveTimes--
+                            }
+                          }
+                          setTimeout(() => {
+                            flag = true
+                          }, 3000)
+                          let random = _self.queryLotteryDate.type
+                          if (random == 0) {
+                            _self.body_bg = 'shakeV'
+                            _self.promptLang = '恭喜你获得' + _self.queryLotteryDate.lotteryInfo
+                          } else if (random == 1) {
+                            _self.body_bg = 'shakeMaterial'
+                            _self.promptLang = '恭喜你获得' + _self.queryLotteryDate.lotteryInfo
+                          } else if (random == 2) {
+                            _self.body_bg = 'shakeCoupon'
+                            _self.promptLang = '恭喜你获得' + _self.queryLotteryDate.lotteryInfo
+                          } else if (random == 3) {
+                            _self.body_bg = 'shakeTimes'
+                            _self.promptLang = '恭喜你获得' + _self.queryLotteryDate.lotteryInfo
+                          } else if (random == 4) {
+                            _self.body_bg = 'noShake'
+                            _self.promptLang = '哎呀，就差一点！'
+                          } else if (random == 5) {
+                            _self.body_bg = 'shakeMaterial'
+                            _self.promptLang = '恭喜你获得' + _self.queryLotteryDate.lotteryInfo
+                          } else {
+                            _self.body_bg = 'shakeMoney'
+                            _self.promptLang = '恭喜你获得' + _self.queryLotteryDate.lotteryInfo
+                          }
+                        } else {
+                          flag = true
+                          _self.$.toast(res.data.errorMessage)
+                        }
+                      }, error => {
+                        flag = true
+                      })
+                    }else{
+                      _self.$.goLogin({
+                          shopId: this.shop.id
+                      })
+                    }
+                  }
+                last_x = x;
+                last_y = y;
+                last_z = z;
+              }
+            }
+        } else {
+          _self.LotteryInitInfo.leaveTimes
+        }
+      } else {
+
+      }
+    }
+    function getClientInfo () {
+      let isAndroidOrIos
+      let u = navigator.userAgent
+      if (u.indexOf('Android') > -1 || u.indexOf('Adr') > -1) {
+        isAndroidOrIos = '0'
+      }
+      if (!!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)) {
+        isAndroidOrIos = '1'
+      }
+      return isAndroidOrIos
+    }
+  }
+}
+</script>
+<style>
+.shakeIndex {
+  background: url(../../assets/shakeIndex.png) center top no-repeat, url(../../assets/bg_shake.png) bottom repeat;
+  background-size: 100%;
+  text-align: center;
+}
+.shakeV {
+  background: url(../../assets/shakeV.png) center top no-repeat, url(../../assets/bg_shake.png) bottom repeat;
+  background-size: 100%;
+  text-align: center;
+}
+.shakeMoney {
+  background: url(../../assets/shakeMoney.png) center top no-repeat, url(../../assets/bg_shake.png) bottom repeat;
+  background-size: 100%;
+  text-align: center;
+}
+.shakeCoupon {
+  background: url(../../assets/shakeCoupon.png) center top no-repeat, url(../../assets/bg_shake.png) bottom repeat;
+  background-size: 100%;
+  text-align: center;
+}
+.shakeMaterial {
+  background: url(../../assets/shakeMaterial.png) center top no-repeat, url(../../assets/bg_shake.png) bottom repeat;
+  background-size: 100%;
+  text-align: center;
+}
+.noShake {
+  background: url(../../assets/noShake.png) center top no-repeat, url(../../assets/bg_shake.png) bottom repeat;
+  background-size: 100%;
+  text-align: center;
+}
+.shakeTimes {
+  background: url(../../assets/shakeTimes.png) center top no-repeat, url(../../assets/bg_shake.png) bottom repeat;
+  background-size: 100%;
+  text-align: center;
+}
+
+.body_title {
+  color: #fff;
+  font-weight: 800;
+  text-align: center;
+  padding-top: 82%;
+}
+.body_content {
+  color: #fff;
+  font-weight: 800;
+  padding: 8px 12px;
+  background:rgba(0,0,0,0.3);
+  display: inline-block;
+  margin-top: 10px;
+  border-radius: 10px;
+}
+.bottom {
+  margin-top: 20px;
+  text-align: center;
+}
+.bottom_title {
+  color: #fde25f;
+  font-size: 16px;
+}
+.bottom_body {
+  width: 88%;
+  margin: auto;
+  margin-top: 15px;
+  background-color: #bc3833;
+  color: #fff;
+  font-size: 12px;
+  padding: 10px;
+}
+.bottom_body table tr td {
+  text-align: left;
+  width: 100px;
+  font-size: 14px;
+  padding-bottom: 5px;
+}
+.bottom_body table tr td:nth-child(2) {
+  text-align: center;
+}
+.bottom_body table tr td:nth-child(3) {
+  text-align: right;
+}
+.bottom_foot {
+  margin-top: 18px;
+  width: 100%;
+  padding: 0px 10%;
+  font-size: 12px;
+  color: #fff;
+  text-align: left;
+  margin-bottom: 30px;
+}
+.bottom_foot_title {
+  color: #ffe461;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+.bottom_foot p {
+  line-height: 25px;
+  padding-bottom: 20px;
+}
+.bottom_bg {
+  position: relative;
+}
+.bot_btn {
+  position: absolute;
+  padding: 8px 12px;
+  color: #cb2c17;
+  background-color: #fff965;
+  border-radius: 8px;
+}
+.bot_lf {
+  top: 0;
+  left: 10%;
+}
+.bot_rig {
+  top: 0;
+  right: 10%;
+}
+.demo-checkbox {
+    float: right;
+    margin-right: 10px;
+    margin-top: 10px;
+}
+.demo-checkbox .mu-checkbox-label {
+  color: #f8f8f8
+}
+.demo-checkbox .mu-checkbox-icon {
+  margin-right: 6px;
+}
+.eve_two .footer .left{
+  	padding:8px;
+    color: #fff;
+    background-color: #bc3833;
+    height: 80px;
+    line-height: 30px;
+  }
+  .eve_two .footer .left .info-top{
+    text-align: left;
+    padding-left: 10px
+  }
+  .eve_two .footer .left .info-bottom{
+    text-align: left;
+    padding-left: 10px
+  }
+</style>

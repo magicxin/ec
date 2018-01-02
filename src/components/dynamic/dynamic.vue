@@ -1,0 +1,405 @@
+<template>
+  <div class="dynamic">
+    <div class="dynamic-item">
+      <div class="top">
+        <div class="left">
+          <img :src="itemData.avatar" />
+        </div>
+        <div class="right">
+          <div class="dynamic-title">
+            {{itemData.name}}
+          </div>
+          <div class="row">
+            <div class="dynamic-date">
+              {{itemData.publishDate | sliceDate}}
+            </div>
+            <div v-if="$.userId === itemData.userId" class="delete" v-tap="{methods:deleteDynamic,id:itemData.id}">删除</div>
+          </div>
+        </div>
+      </div>
+      <div class="middle">
+        <div class="topic-container">
+          <div class="topic" v-if="itemData.topics.length>0">{{itemData.topics[0].content | topic}}</div>
+          <div v-html="itemData.content" v-tap="{methods:goAllComments, item: itemData}"></div>
+        </div>
+        <!--start 发文章 -->
+        <div v-if="itemData.share.id" class="article-top" v-tap="{methods:goArticle,item:itemData}">
+          <div class="article-left">
+            <img :src="addPath(itemData.share.image)" />
+          </div>
+          <div class="article-right">
+            <div class="dynamic-title">
+              {{itemData.share.title}}
+            </div>
+            <div class="dynamic-date">
+              {{itemData.share.content}}
+            </div>
+          </div>
+        </div>
+        <!--end 发文章 -->
+
+        <!--start 发音频 -->
+        <magic-audio v-if="itemData.audios.length>0" :audioData="itemData | audioData"></magic-audio>
+        <!--end 发音频 -->
+
+        <!--start 发视频 -->
+        <video class="video" v-if="itemData.videos.length>0" poster="defaultAvatar" controls :src="addPath(itemData.videos[0])"></video>
+        <!--end 发视频 -->
+
+        <!--start 发图片 -->
+        <magic-image v-if="itemData.images.length>0" :bigImage="itemData.images"></magic-image>
+        <!--end 发图片 -->
+      </div>
+      <div class='bottom' v-if="showBottom">
+        <div class="reply" v-tap="{methods:goComment,id:itemData.id}">
+          <img :src="dissIcon" class="icon-discuss" />{{itemData.commentCount}}
+        </div>
+        <div class="like" v-tap="{methods:like,id:itemData.id}" v-if="support">
+          <img v-show="isSupport === '0'" class="icon-discuss" :src="heartIcon" />
+          <img v-show="isSupport === '1'" class="icon-discuss" :src="heart1Icon" />{{supportCount}}
+        </div>
+        <div class="like" v-tap="{methods:like,id:itemData.id}" v-if="!support">
+          <img v-show="itemData.isSupport === '0'" class="icon-discuss" :src="heartIcon" />
+          <img v-show="itemData.isSupport === '1'" class="icon-discuss" :src="heart1Icon" />{{itemData.supportCount}}
+        </div>
+      </div>
+      <!--start 评论 -->
+      <div class="comments" v-if="showComments.length>0 && showDetail">
+        <div class="comments-item" v-for="item in showComments">
+          <span class="left">{{item.member.nickname}}：</span>
+          <span class="right">{{item.content}}</span>
+        </div>
+        <div class="all-comments" v-if="itemData.commentCount>3" v-tap="{methods:goAllComments,item:itemData}">
+          查看全部评论
+        </div>
+      </div>
+      <!--end 评论 -->
+    </div>
+    <!--<div class="comment">
+			<div class="comment-head">
+				<div class="left">取消</div>
+				<div class="middle">评论</div>
+				<div class="right">
+					<div>发送</div>
+				</div>
+			</div>
+			<div class="comment-content"></div>
+		</div>-->
+  </div>
+</template>
+<script>
+import defaultAvatar from "assets/default_user_icon.png";
+import dissIcon from "assets/discuss.svg";
+import heartIcon from "assets/heart.svg";
+import heart1Icon from "assets/heart1.svg";
+import magicAudio from "components/audio/ma_audio";
+import magicImage from "components/image/ma_image";
+export default {
+  name: "dynamic",
+  data() {
+    return {
+      audioData: {
+        id: "",
+        url: ""
+      },
+      support: false,
+      isSupport: "",
+      supportCount: "",
+      dissIcon,
+      heartIcon,
+      heart1Icon
+    };
+  }, // 截取日期字符串
+  components: {
+    magicAudio,
+    magicImage
+  },
+  filters: {
+    sliceDate: function(value) {
+      if (!value) return "";
+      return value.slice(5, 10);
+    },
+    topic(value) {
+      return "#" + value + "#";
+    },
+    audioData(value) {
+      return {
+        id: value.id,
+        url: value.audios[0]
+      };
+    }
+  },
+  computed: {
+    showComments() {
+      return this.itemData.comments.slice(0, 3);
+    }
+  },
+  watch: {
+    itemData(newV, oldV) {
+      return newV;
+    }
+  },
+  props: {
+    itemData: {
+      type: Object,
+      required: true
+    },
+    showBottom: {
+      type: Boolean,
+      required: false,
+      default() {
+        return true;
+      }
+    },
+    showDetail: {
+      type: Boolean,
+      required: false,
+      default() {
+        return true;
+      }
+    }
+  },
+  methods: {
+    //返回机制：若returnNative传了一个true值，会使用桥接的back 这里需要在相应的auth下配置native为true，并且在首位导航判断search。
+    deleteDynamic(params) {
+      this.$.confirm(
+        {
+          msg: "确认删除吗？"
+        },
+        () => {
+          this.$
+            .get({
+              methodName: "DeleteSpace",
+              ids: [params.id]
+            })
+            .then(res => {
+              if (res.data.resultCode === "100") {
+                // 删除成功则向父组件发送removeSuccess事件
+                this.$emit("removeSuccess");
+                console.log(res);
+              }
+            });
+        }
+      );
+    },
+    goArticle(params) {
+      //进入文章
+      console.log(params);
+      let item = params.item.share;
+      this.$router.push({
+        name: "channelDetail",
+        query: {
+          channel: JSON.stringify({
+            desc: item.content,
+            id: item.id,
+            image: item.image,
+            name: item.title,
+            publishDate: params.item.publishDate,
+            url: this.addPath(item.path)
+          })
+        }
+      });
+    },
+    goComment(params) {
+      //进入评论
+      this.$router.push({
+        name: "comment",
+        params: {
+          id: params.id
+        }
+      });
+    },
+    goAllComments(params) {
+      //全部评论
+      this.$router.push({
+        name: "allcomment",
+        query: {
+          id: params.item.id
+        },
+        params: {
+          item: params.item
+        }
+      });
+    },
+    like(params) {
+      //点赞
+      this.$
+        .get({
+          methodName: "CreateSpaceSupport",
+          spaceId: params.id
+        })
+        .then(res => {
+          this.support = true;
+          this.isSupport = res.data.isSupport;
+          this.supportCount = res.data.supportCount;
+        });
+    }
+  }
+  //		created() {
+  //						console.log(this.itemData)
+  //		}
+};
+</script>
+
+<style scoped>
+.dynamic-item {
+  display: flex;
+  flex-flow: column;
+  padding: 1em;
+}
+
+.top {
+  display: flex;
+}
+
+.top .left {
+  padding: 4px;
+}
+
+.top .left img {
+  width: 40px;
+  height: 40px;
+  flex: 1 1 0;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.top .right {
+  flex: 4 1 0;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  padding: 4px;
+}
+
+.dynamic-title {
+  font-size: 16px;
+  margin-bottom: 6px;
+}
+
+.row {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.dynamic-date {
+  color: #999;
+  margin-right: 1em;
+}
+
+.delete {
+  color: #f98700;
+}
+
+.middle {
+  padding: 6px;
+}
+
+.bottom {
+  display: flex;
+}
+
+.topic-container {
+  display: flex;
+}
+
+.topic {
+  color: #f98700;
+  margin-right: 0.5em;
+}
+
+.reply,
+.like {
+  flex: 1 1 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 6px;
+  border: 1px solid #f1f1f5;
+}
+
+.icon-mess {
+  font-size: 19px;
+}
+
+.icon-heart {
+  font-size: 14px;
+}
+
+.icon-heart1 {
+  font-size: 19px;
+  color: #f98700;
+  margin-top: 2px;
+}
+
+i {
+  margin-right: 2px;
+}
+
+.comments {
+  display: flex;
+  flex-flow: column;
+  padding: 1em;
+  background: #f2f2f2;
+  margin: 0.5em;
+}
+
+.comments-item {
+  padding: 0.5em;
+}
+
+.all-comments {
+  display: flex;
+  justify-content: center;
+  color: #f98700;
+  padding: 1em;
+}
+
+.comments-item .left {
+  color: #f98700;
+}
+
+.video {
+  width: 90%;
+  height: 75vw;
+}
+
+.icon-discuss {
+  padding-right: 5px;
+}
+/*.comment{
+		width:100%;
+		position:fixed;
+		bottom:0;
+		height:150px;
+		background:#fff;
+	}
+	.comment-head{
+		display:flex;
+		height:30px;
+		border-bottom:1px solid #ececec;
+	}
+	.comment-head div{
+		display:flex;
+		justify-content: center;
+		align-items: center;
+	}
+	.comment-head .left{
+		flex:1 1 0;
+		font-size:12px;
+	}
+	.comment-head .middle{
+		flex:3 1 0;
+		font-size:14px;
+	}
+	.comment-head .right{
+		flex:1 1 0;
+		font-size:12px;
+	}
+	.comment-head .right div{
+		background:#f98700;
+		color:#fff;
+		padding:4px 12px;
+		border-radius: 4px;
+	}*/
+</style>

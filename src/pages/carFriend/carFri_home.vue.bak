@@ -1,0 +1,940 @@
+<style>
+  #carFri_home {
+    /* bug 8517*/
+    /*margin-bottom: 80px;*/
+  }
+
+  #carFri_home.carFri_home {
+
+    /*margin-bottom: 50px;*/
+    /*height: 800px;*/
+  }
+
+  #carFri_home .carfri-body {
+    /*background-color: #F0EFF5;*/
+  }
+
+  #carFri_home .menuButton {
+    background-color: #fff;
+    margin-bottom: 10px;
+  }
+
+  #carFri_home .menuButton .mu-flexbox {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+
+  #carFri_home .menuButton .flex-item {
+    text-align: center;
+    padding-top: 30px;
+    position: relative;
+  }
+
+  #carFri_home .order-button {
+    border-radius: 8px;
+    padding: 15px 0px;
+    border: none;
+  }
+
+  #carFri_home .carfri_meet > .order-button {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  #carFri_home .menuButton .xhdShowOne,
+  #carFri_home .menuButton .xhdShowTwo {
+    margin-bottom: 0px;
+  }
+
+  #carFri_home .city_active > .order-button {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+
+  #carFri_home .hot_discussion > .order-button {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+
+  #carFri_home .carfri > .order-button {
+    padding-left: 22px;
+    padding-right: 22px;
+  }
+
+  #carFri_home .carfri-tabs {
+    margin-top: 8px;
+  }
+
+  #carFri_home .mu-tabs {
+    background-color: #fff;
+    color: #000;
+  }
+
+  #carFri_home .mu-tab-link {
+    color: black;
+    border-bottom: 1px solid #F1F1F5;
+  }
+
+  #carFri_home .mu-tab-active {
+    color: #f98700;
+  }
+
+  #carFri_home .mu-tab-link-highlight {
+    background-color: #f98700;
+  }
+
+  /*#carFri_home .result_empty img {
+  margin-top: 25%
+}*/
+
+  #carFri_home .scroll-box {
+    position: unset;
+  }
+
+  #carFri_home .md-card {
+    margin-bottom: 10px;
+  }
+
+  #carFri_home .icon-edit {
+    border-radius: 50%;
+    background-color: #F98700;
+    font-size: 24px;
+    color: #fff;
+    width: 45px;
+    height: 45px;
+    text-align: center;
+    padding-top: 10px;
+    position: fixed;
+    bottom: 65px;
+    left: 84%;
+    box-shadow: 0 0 15px #BDBEC0;
+  }
+
+  #carFri_home .icon-edit.pubDyn {
+    bottom: 16px;
+  }
+
+  #carFri_home .icon-text_yuandian-- {
+    color: red;
+    position: absolute;
+  }
+
+  #carFri_home .xhdShowOne .icon-text_yuandian-- {
+    top: 26%;
+    left: 92%;
+  }
+
+  #carFri_home .xhdShowTwo .icon-text_yuandian-- {
+    top: 26%;
+    left: 87%;
+  }
+
+  #carFri_home .carfri-tabs .xhdShow {
+    top: 11px;
+    right: 12%;
+  }
+
+  #carFri_home .carfri-tabs .xhdShowOth {
+    top: 11px;
+    /*right: 50px;*/
+    right: 12%;
+  }
+
+  #carFri_home .newMessage {
+    background-color: #fff;
+    text-align: center;
+    border-bottom: solid 1px #F1F1F5;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    /*align-content: center;*/
+  }
+
+  #carFri_home .newMessage span {
+    background-color: #F98700;
+    color: #fff;
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 50px;
+    /*align-content: center;*/
+    /*width: */
+  }
+
+  #pubCarfri_dynamic.border_bottom {
+    border-bottom: 1px solid #929292;
+  }
+
+  #pubCarfri_dynamic {
+    background-color: #F7F7F7;
+    min-height: 50px;
+    position: fixed;
+    top: 0px;
+    /*line-height: 50px;*/
+    width: 100%;
+    z-index: 9111289;
+  }
+
+  #pubCarfri_dynamic .header-right-img {
+    width: 50px;
+    line-height: 50px;
+  }
+
+  #pubCarfri_dynamic .header-content {
+    text-align: center;
+    font-size: 1.6rem;
+    line-height: 50px;
+  }
+
+  #pubCarfri_dynamic .icon-left {
+    position: relative;
+    top: 0px;
+    left: 8px;
+    font-size: 23px;
+  }
+
+  #pubCarfri_dynamic .mu-flat-button.disSend {
+    position: relative;
+    top: 10px;
+    right: 30px;
+    height: 30px;
+    min-width: 30px;
+    font-size: 13px;
+    color: #B9B9B9;
+    background-color: #F7F7F7;
+  }
+
+  #pubCarfri_dynamic .mu-flat-button.send {
+    position: relative;
+    top: 10px;
+    right: 30px;
+    height: 30px;
+    min-width: 30px;
+    font-size: 13px;
+    background-color: #F7F7F7;
+    color: #F98700;
+  }
+
+  #pubCarfri_dynamic .left {
+    padding-left: 10px;
+    line-height: 50px;
+  }
+
+  #pubCarfri_dynamic .content {
+    background-color: #fff;
+  }
+
+  #pubCarfri_dynamic .content textarea {
+    padding: 10px;
+    font-size: 16px;
+    line-height: 24px;
+    border: none;
+    resize: none;
+    outline: none;
+    overflow: auto;
+    width: 100%;
+    height: 150px;
+  }
+
+  #pubCarfri_dynamic .content textarea.active {
+    border: none;
+  }
+
+  #pubCarfri_dynamic .content textarea.focus {
+    border: none;
+  }
+
+  #pubCarfri_dynamic .upImg {
+    display: inline-block;
+    margin-left: 10px;
+  }
+
+  #pubCarfri_dynamic .content-img {
+    display: inline-block;
+    margin-left: 10px;
+    margin-bottom: 10px;
+    position: relative;
+  }
+
+  #pubCarfri_dynamic .mu-icon {
+    position: absolute;
+    color: #fff;
+    border: 1px solid #BDBEC0;
+    background-color: #BDBEC0;
+    background-color: rgba(0, 0, 0, 0.2);
+    /*background-color: rgba(224, 224, 224, 0.5);*/
+    left: 78%;
+    opacity: 0.7;
+  }
+
+  #pubCarfri_dynamic .content-img img {
+    object-fit: cover;
+  }
+
+  #carFri_home .my-swipe {
+    height: 185px;
+  }
+
+</style>
+<template>
+  <div id="carFri_home" :style="{height: screenHeight + 'px', overflow: 'auto'}"
+       v-bind:class="{carFri_home: isAndroid}">
+    <my-header main-text="社区" bg-color="#F7F7F7" text-color="#000">
+    </my-header>
+    <!-- <scroll :marginBottom="isAndroid ? 0 : 49" :marginTop="isAndroid ? 0 : 49"> -->
+        <div v-if="isShow" style="height: 100%; overflow: auto" class="scroll-box">
+          <swipe class="my-swipe">
+            <swipe-item v-if="banner.length==0">
+              <img class="swipe" :src="carFriend"
+                   width="100%" height="100%"/>
+            </swipe-item>
+            <swipe-item v-if="banner.length>0" v-for="(item,index) in banner" :key="index">
+              <img class="swipe" :src="item.image" :name="item.path"
+                   width="100%" height="100%" @click="navToActive"/>
+            </swipe-item>
+          </swipe>
+          <div class="menuButton">
+            <mu-flexbox>
+              <mu-flexbox-item class="flex-item carfri_meet" v-bind:class="{xhdShowOne: newFleet}">
+                <order-button bgcolor="#F02B2B"
+                              color="#fff" v-tap="{ methods: goMeet }">
+                  车友会
+                </order-button>
+                <i v-if="newFleet" class="iconfont icon-text_yuandian--"></i>
+              </mu-flexbox-item>
+              <mu-flexbox-item class="flex-item city_active" v-bind:class="{xhdShowTwo: newActive}">
+                <order-button bgcolor="#548CD1"
+                              color="#fff" v-tap="{ methods: goActive }">
+                  同城活动
+                </order-button>
+                <i v-if="newActive" class="iconfont icon-text_yuandian--"></i>
+              </mu-flexbox-item>
+              <mu-flexbox-item class="flex-item hot_discussion" v-bind:class="{xhdShowTwo: newDiscuss}">
+                <order-button bgcolor="#F98700"
+                              color="#fff" v-tap="{ methods: goDiscussion }">
+                  热门讨论
+                </order-button>
+                <i v-if="newDiscuss" class="iconfont icon-text_yuandian--"></i>
+              </mu-flexbox-item>
+              <mu-flexbox-item class="flex-item carfri" v-bind:class="{xhdShowOne: newCarfri}">
+                <order-button bgcolor="#548CD1"
+                              color="#fff" v-tap="{ methods: selfClick }">
+                  车友
+                </order-button>
+                <i v-if="newCarfri" class="iconfont icon-text_yuandian--"></i>
+              </mu-flexbox-item>
+            </mu-flexbox>
+          </div>
+
+          <div class="carfri-tabs">
+            <mu-tabs :value="activeTab" @change="handleTabChange">
+              <mu-tab value="1" title="车友会动态"/>
+              <i v-if="newFleetDyn" class="iconfont icon-text_yuandian--" v-bind:class="{xhdShow: newFleetDyn}"></i>
+              <mu-tab value="0" title="车友动态"/>
+              <i v-if="newFriDyn" class="iconfont icon-text_yuandian--" v-bind:class="{xhdShowOth: newFriDyn}"></i>
+            </mu-tabs>
+          </div>
+          <div v-if="newMessage && newMessList.length > 0" class="newMessage"
+               v-tap="{methods: checkMess, lastMessTime: _lastTime, name: nickName}">
+            <span>我的新动态{{newMessList.length}}</span>
+          </div>
+          <div class="carfri-body">
+            <div v-if="activeTab === '1'">
+              <empty v-if="dynamicListOne.length === 0" message="暂时没有动态"></empty>
+              <load-more :getMore="loadBottom" :allLoaded="allLoaded" v-else>
+                <ul>
+                  <li v-for="(item, index) in dynamicListOne" :key="index">
+                    <dynamic :dynamicData="item" :index="index" :nickName="nickName" :status="item.isStart"
+                             v-on:play="play">
+
+                    </dynamic>
+                  </li>
+                </ul>
+              </load-more>
+            </div>
+            <div v-if="activeTab === '0'">
+              <empty v-if="dynamicListTwo.length === 0" message="暂时没有动态"></empty>
+              <load-more :getMore="loadBottom" :allLoaded="allLoaded" v-else>
+                <ul>
+                  <li v-for="(item, index) in dynamicListTwo" :key="index">
+                    <dynamic :dynamicData="item" :index="index" :nickName="nickName" @deleteDyn="deleteDynamic"></dynamic>
+                  </li>
+                </ul>
+              </load-more>
+              <div v-if="isShow === true && isAndroid">
+                <i class="iconfont icon-edit" v-bind:class="{pubDyn: isAndroid}" v-tap="{methods: pubDynamic}"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+    </scroll >
+    <div v-if="activeTab === '0' && isShow === true && !isAndroid">
+      <i class="iconfont icon-edit" v-bind:class="{pubDyn: isAndroid}" v-tap="{methods: pubDynamic}"></i>
+    </div>
+
+    <div id="pubCarfri_dynamic" v-if="!isShow">
+      <form>
+        <div layout="row" layout-align="center baseline " class="header-bar border_bottom">
+          <div layout="row" layout-align="flex-start center" class="header-right-img left">
+            <i class="iconfont icon-left" v-tap="{methods: cancel}"></i>
+          </div>
+          <div flex class="header-content">
+            发动态
+            <slot name="center"></slot>
+          </div>
+          <div v-if="queryData.content.length == 0 && imgList.length == 0" class="header-right-img"
+               layout-align="flex-end center" layout="row" flex="nogrow">
+            <slot name="right"></slot>
+            <mu-flat-button class="disSend" label="发送" disabled/>
+          </div>
+          <div class="header-right-img" layout-align="flex-end center" layout="row" flex="nogrow" v-else>
+            <slot name="right"></slot>
+            <mu-flat-button v-tap="{methods: submit}" class="send" label="发送"/>
+          </div>
+        </div>
+        <div class="content">
+          <textarea v-model="queryData.content" placeholder="分享新鲜事"></textarea>
+          <div>
+            <span v-for="(item, index) in imgList" :key="index" class="content-img img-container">
+              <mu-icon value="close" v-tap="{methods: cancelUploadByIndex, index: index}"></mu-icon>
+              <img :src="item.data" :height="imgWidth" :width="imgWidth">
+            </span>
+            <img class="upImg" v-tap="{methods: upload}" v-show="imgList.length < 6" src="../../assets/add-img.png"
+                 :height="imgWidth" :width="imgWidth">
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</template>
+<script>
+  import myHeader from 'components/my-header'
+  import 'vue-swipe/dist/vue-swipe.css'
+  import orderButton from 'components/order-button'
+  import empty from 'components/empty-page.vue'
+  import dynamic from 'components/dynamic'
+  import Loadmore from 'components/loadmore'
+
+
+
+  import emoji from 'components/emoji'
+  import model from 'components/model'
+  import scroll from 'components/scroll'
+  import carFriend from 'assets/carFriend.png'
+  import Vue from 'vue'
+  import {
+    Swipe,
+    SwipeItem
+  } from 'vue-swipe'
+  Vue.component('swipe', Swipe);
+  Vue.component('swipe-item', SwipeItem);
+  let loading = false
+  let queryOne = {
+    index: 10,
+    count: 10
+  }
+  let queryTwo = {
+    index: 0,
+    count: 10
+  }
+  let cache = {}
+  let befTime
+  let aftTime
+  let lastTime
+  let _lastTime
+
+  export default {
+    name: 'carFri_home',
+    data() {
+      return {
+        loading: false,
+        screenWidth: window.screen.width,
+        screenHeight: document.documentElement ? document.documentElement.clientHeight : document.body.clientHeight,
+        activeTab: '1',
+        dynamicListOne: [],
+        dynamicListTwo: [],
+        isShow: true,
+        allLoaded: false,
+        queryData: {
+          methodName: 'CreateSpace',
+          content: '',
+          position: '',
+          images: []
+        },
+        imgList: [],
+        isAndroid: '',
+        timeMap: {},
+        NewLastTime: '',
+        _lastTime: '',
+        newCarfri: '',
+        newFleet: '',
+        newActive: '',
+        newDiscuss: '',
+        newFleetDyn: '',
+        newFriDyn: '',
+        newMessage: '',
+        userInfo: '',
+        banner: [],
+        carFriend: carFriend
+      }
+    },
+    computed: {
+      imgWidth() {
+        let width = (this.screenWidth - 28) * 0.33 - 4
+        return width
+      }
+    },
+    created() {
+      let that = this;
+        that.userInfo = {
+                	userId:this.$.userId,
+                	shop:{
+                		id:this.$.shopId
+                	}
+                }
+        this.$.get({
+          "clientType": this.$.getClientType,
+          "methodName": "QueryAdPosition",
+          "shopId": that.userInfo.shop.id,
+          "userId": that.userInfo.userId,
+          "type": "5"
+        })
+          .then(res => {
+            console.dir(res)
+            this.banner = res.data.ads;
+            this.banner.forEach((item, index) => {
+              this.banner[index].image = this.addPath(item.image);
+            })
+          })
+
+    },
+    methods: {
+      navToActive(e) {
+        if (this.banner.length > 0) {
+          if (this.banner[0].path.indexOf("http") > -1) {
+            window.location.href = e.target.name
+          } else {
+            nativeRouter.push({
+              name: 'router_crossWebView',
+              query: {
+                project: 'ec',
+                routeAndParams: e.target.name
+              }
+            })
+          }
+        }
+
+      },
+      play(index, play) {
+        if (play === 'play') {
+          console.log('init')
+          const _current = this.dynamicListOne[index].isStart
+          this.dynamicListOne.forEach(val => {
+            this.$set(val, 'isStart', true)
+          })
+          this.$set(this.dynamicListOne[index], 'isStart', false);
+        } else if (play === 'pause') {
+          this.$set(this.dynamicListOne[index], 'isStart', true);
+        }
+      },
+      // tab页切换
+      handleTabChange(val) {
+        if (val === '1' && this.newFleetDyn === true) {
+          this.newFleetDyn = false
+          befTime[9] = aftTime[9]
+          window.localStorage.setItem('timeMap', JSON.stringify(befTime))
+        }
+        if (val === '0' && this.newFriDyn === true) {
+          this.newFriDyn = false
+          befTime[10] = aftTime[10]
+          window.localStorage.setItem('timeMap', JSON.stringify(befTime))
+        }
+        this.activeTab = val
+        this.$router.replace({
+          name: 'carFri_home',
+          params: {
+            status: val
+          }
+        })
+      },
+      // 下来刷新
+      loadBottom() {
+        if (window.localStorage) {
+          window.localStorage.setItem('carfriTop', this.$.scrollTop)
+        }
+        if (this.activeTab === '1') {
+          this.getDynamicOne(this.activeTab)
+          window.scrollTo(0, window.localStorage.getItem('carfriTop'))
+        } else {
+          this.getDynamicTwo(this.actixveTab)
+          window.scrollTo(0, window.localStorage.getItem('carfriTop'))
+        }
+      },
+      // 车友首页四个菜单按钮路由跳转
+      // 车友会
+      goMeet() {
+        this.$router.push({
+          name: 'carfri_meetLists'
+        })
+        if (this.newFleet === true) {
+          this.newFleet = false
+          befTime[6] = aftTime[6]
+          window.localStorage.setItem('timeMap', JSON.stringify(befTime))
+        }
+      },
+      // 同城活动
+      goActive() {
+        this.$router.push({
+          name: 'city_active'
+        })
+        if (this.newActive === true) {
+          this.newActive = false
+          befTime[7] = aftTime[7]
+          window.localStorage.setItem('timeMap', JSON.stringify(befTime))
+        }
+      },
+      // 热门讨论
+      goDiscussion() {
+        this.$router.push({
+          name: 'hot_discussion'
+        })
+        if (this.newDiscuss === true) {
+          this.newDiscuss = false
+          befTime[8] = aftTime[8]
+          window.localStorage.setItem('timeMap', JSON.stringify(befTime))
+        }
+      },
+      // 进入原生车友页面
+      selfClick() {
+        this.$.push('route_carFriends', null, (response) => {
+          console.log(response)
+        })
+      },
+      // 获取车友会动态
+      getDynamicOne(activeTab) {
+        if (loading) {
+          return
+        }
+        loading = true
+        return this.$.get({
+          methodName: 'QueryRidersSpace',
+          index: queryOne.index.toString(),
+          count: queryOne.count.toString(),
+          type: '1'
+        }).then(resp => {
+          loading = false
+          if (resp.data.resultCode === '100') {
+            queryOne.index += queryOne.count
+            resp.data.spaces.forEach(val => {
+              console.log(val)
+              if (!val.hasOwnProperty('isStart')) {
+                val.isStart = true
+              }
+              this.dynamicListOne.push(val)
+            })
+            if (this.dynamicListOne.length < queryOne.count) {
+              this.allLoaded = false
+            }
+          }
+        })
+      },
+      // 获取车友动态
+      getDynamicTwo(activeTab) {
+        if (loading) {
+          return
+        }
+        loading = true
+        return this.$.get({
+          methodName: 'QueryRidersSpace',
+          index: queryTwo.index.toString(),
+          count: queryTwo.count.toString(),
+          type: '0'
+        }).then(resp => {
+          loading = false
+          let u = navigator.userAgent
+          this.isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1
+          if (resp.data.resultCode === '100') {
+            queryTwo.index += queryTwo.count
+            resp.data.spaces.forEach(val => {
+              this.dynamicListTwo.push(val)
+            })
+            if (this.dynamicListTwo.length < queryTwo.count) {
+              this.allLoaded = false
+            }
+          }
+        })
+      },
+      // 查看未读消息
+      checkMess(params) {
+        this.$router.push({
+          name: 'new_message',
+          params: {
+            lastMessTime: params.lastMessTime,
+            usernickName: params.name
+          }
+        })
+        this.newMessage = false
+        _lastTime = lastTime
+        window.localStorage.setItem('NewLastTime', _lastTime)
+      },
+      // 删除动态
+      deleteDynamic: function (index) {
+        this.dynamicListTwo.splice(index, 1)
+      },
+      // 显示发动态页面
+      pubDynamic() {
+        this.isShow = false
+      },
+      // 取消发动态
+      cancel() {
+        this.isShow = true
+        this.imgList = []
+        this.queryData.content = ''
+        this.queryData.images = []
+      },
+      // 调用原生接口上传图片
+      upload() {
+        let maxLength = 6
+        if (this.imgList.length >= maxLength) {
+          this.$.toast(`您最多可以选择${maxLength}张图片`)
+          return
+        }
+        this.$.push('router_takePhoto', {
+          maxNum: maxLength - this.imgList.length
+        }, (resp) => {
+          try {
+            resp = JSON.parse(resp)
+            resp.forEach(val => {
+              if (this.imgList.length < maxLength) {
+                this.imgList.push(val)
+                if (!cache[val.type]) {
+                  cache[val.type] = []
+                }
+                cache[val.type].push(val.data)
+              }
+            })
+          } catch (e) {
+            window.alert(e)
+          }
+        })
+      },
+      // 取消选中的图片
+      cancelUploadByIndex(params) {
+        let index = params.index
+        let whichToSplice = this.imgList.splice(index, 1)[0]
+        try {
+          let type = whichToSplice.type
+          let cancelIndex = cache[type].indexOf(whichToSplice.data)
+          cache[type].splice(cancelIndex, 1)
+        } catch (e) {
+          window.alert(e)
+        }
+      },
+      // 提交发动态的表单
+      submit() {
+        let promises = []
+        for (let name in cache) {
+          if (cache[name].length > 0) {
+            promises.push(
+              postFileByFormData({
+                type: '.' + name,
+                data: cache[name]
+              })
+            )
+          }
+        }
+        if (promises.length > 0) {
+          Promise.all(promises).then(([result]) => {
+            try {
+              // 之后就是将新上传的照片拼接回来就好了
+              this.queryData.images = result && this.queryData.images.concat(result.urls)
+              this.$.get({
+                methodName: 'CreateSpace',
+                content: encodeURIComponent(this.queryData.content),
+                position: this.queryData.position,
+                images: this.queryData.images
+              }).then(resp => {
+                if (resp.data.resultCode === '100') {
+                  cache = {}
+                  this.dynamicListTwo = []
+                  queryTwo.index = 0
+                  this.getDynamicTwo(this.activeTab)
+                  this.isShow = true
+                  this.imgList = []
+                  this.queryData.content = ''
+                  this.queryData.images = []
+                }
+              }, (err) => {
+                window.alert(err)
+              })
+            } catch (e) {
+              window.alert(e)
+            }
+          })
+        } else {
+          this.$.get({
+            methodName: 'CreateSpace',
+            content: encodeURIComponent(this.queryData.content),
+            position: this.queryData.position,
+            images: this.queryData.images
+          }).then(resp => {
+            if (resp.data.resultCode === '100') {
+              this.dynamicListTwo = []
+              queryTwo.index = 0
+              this.getDynamicTwo(this.activeTab)
+              this.isShow = true
+              this.imgList = []
+              this.queryData.content = ''
+              this.queryData.images = []
+            }
+          })
+        }
+      }
+    },
+
+    beforeRouteEnter(to, from, next) {
+      next(vm => {
+        // 原生调用此方法，来控制车友小红点的显示
+        Vue.prototype.$.registerCar('data_sendNewMessage', vm)
+      })
+    },
+    mounted() {
+
+      const __this = this;
+      window.onresize = function resizeHandle() {
+        __this.screenHeight = document.documentElement ? document.documentElement.clientHeight : document.body.clientHeight;
+        __this.screenWidth = window.screen.width;
+        // console.warn(document.documentElement ? document.documentElement.clientHeight : document.body.clientHeight);
+      };
+
+      // 获取用户昵称，用于显示删除动态的按钮
+      this.$.get({
+        methodName: 'QueryUserInfo'
+      }).then(resp => {
+        if (resp.data.resultCode === '100') {
+          this.nickName = resp.data.userNickname
+        }
+      })
+      let vm = this
+      if (window.localStorage.getItem('timeMap') !== null) {
+        this.$.get({
+          methodName: 'QueryNewEventAlarm'
+        }).then(resp => {
+          if (resp.data.resultCode === '100') {
+            befTime = JSON.parse(window.localStorage.getItem('timeMap'))
+            aftTime = resp.data.timeStampMap
+            if (aftTime[6] !== befTime[6]) {
+              vm.newFleet = true
+            }
+            if (aftTime[7] !== befTime[7]) {
+              vm.newActive = true
+            }
+            if (aftTime[8] !== befTime[8]) {
+              vm.newDiscuss = true
+            }
+            if (aftTime[9] !== befTime[9] && _type === '0') {
+              vm.newFleetDyn = true
+            }
+            if (aftTime[10] !== befTime[10] && _type === '1') {
+              vm.newFriDyn = true
+            }
+          }
+        })
+      } else {
+        this.$.get({
+          methodName: 'QueryNewEventAlarm'
+        }).then(resp => {
+          if (resp.data.resultCode === '100') {
+            window.localStorage.setItem('timeMap', JSON.stringify(resp.data.timeStampMap))
+          }
+        })
+      }
+      let _type = vm.activeTab
+      let u = navigator.userAgent
+      vm.isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1
+      this.$.get({
+        methodName: 'QueryRidersSpace',
+        index: '0',
+        count: '10',
+        type: _type
+      }).then(resp => {
+        if (resp.data.resultCode === '100') {
+          if (vm.activeTab === '1') {
+            vm.newFleetDyn = false
+            vm.dynamicListOne = []
+            resp.data.spaces.forEach(val => {
+              if (!val.hasOwnProperty('isStart')) {
+                val.isStart = true
+              }
+              vm.dynamicListOne.push(val)
+            })
+            // vm.dynamicListOne = resp.data.spaces
+            if (resp.data.spaces.length < queryOne.count) {
+              vm.allLoaded = false
+            }
+          } else {
+            vm.newFriDyn = false
+            vm.dynamicListTwo = []
+            vm.dynamicListTwo = resp.data.spaces
+            if (resp.data.spaces.length < queryOne.count) {
+              vm.allLoaded = false
+            }
+          }
+        }
+      })
+      // 获取数据控制新消息提醒是否显示
+      if (window.localStorage.getItem('NewLastTime') !== null) {
+        _lastTime = window.localStorage.getItem('NewLastTime')
+        vm._lastTime = window.localStorage.getItem('NewLastTime')
+        console.log(_lastTime)
+        this.$.get({
+          methodName: 'QuerySpaceMessage',
+          lastTime: _lastTime
+        }).then(resp => {
+          if (resp.data.resultCode === '100') {
+            lastTime = resp.data.lastestTime
+            if (_lastTime !== lastTime) {
+              window.localStorage.setItem('NewLastTime', resp.data.lastestTime)
+              vm.newMessage = true
+              vm.newMessList = []
+              vm.newMessList = resp.data.spaceMessages
+            }
+          }
+        })
+      } else {
+        this.$.get({
+          methodName: 'QuerySpaceMessage'
+        }).then(resp => {
+          if (resp.data.resultCode === '100') {
+            window.localStorage.setItem('NewLastTime', resp.data.lastestTime)
+          }
+        })
+      }
+    },
+
+    // 监听tab页，获取不同的动态数据
+    watch: {
+      activeTab(val) {
+        let activeTab = val
+        if (activeTab === '1') {
+          this.dynamicListOne = []
+          queryOne.index = 0
+          this.getDynamicOne(activeTab)
+        } else {
+          this.dynamicListTwo = []
+          queryTwo.index = 0
+          this.getDynamicTwo(activeTab)
+        }
+      }
+    },
+    components: {
+      model,
+      myHeader,
+      orderButton,
+      dynamic,
+      empty,
+      loadMore: Loadmore,
+      emoji,
+      scroll
+    }
+  }
+
+</script>

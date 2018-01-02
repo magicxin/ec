@@ -1,0 +1,152 @@
+<template>
+  <div id="login">
+    <section class="sm_f">
+      <img src="../../assets/loginBg.jpg" alt="" width="100%">
+      <div class="border">
+        <span>手机号</span>
+        <input type="tel" class="sm_f" v-model="phone" placeholder="仅支持中国大陆手机">
+        <button :class="{'invalid': isInvalid, 'legal': !isInvalid }" @click="getCode()">{{ message }}</button>
+      </div>
+      <div class="border">
+        <span>验证码</span>
+        <input type="tel" class="sm_f" placeholder="请输入验证码" v-model="code">
+      </div>
+    </section>
+    <div class="draw_btn">
+        <mu-raised-button label="登录" :backgroundColor="loginColor" :fullWidth="isTrue" v-tap="{methods: login}"/>
+    </div>
+  </div>
+</template>
+<style>
+  #login {
+    background-color: #fff;
+    min-height: 667px;
+    position: relative;
+  }
+  #login input {
+    padding: 0px 8px;
+    outline: none;
+    border: none;
+  }
+  #login input:focus {
+    outline: none
+  }
+  #login .border {
+    margin: 0px 15px;
+    border-bottom: 1px solid #dcdcdc;
+    padding: 6px 0px;
+  }
+  #login .invalid {
+    padding: 8px;
+    border: none;
+    background-color: #ccc;
+    color: #929292;
+  }
+  #login .legal {
+    padding: 8px;
+    border: none;
+    background-color: #f98700;
+    color: #fff;
+  }
+  #login .draw_btn {
+    width: 88%;
+    margin: auto;
+    margin-top: 20px;
+  }
+  #login .draw_btn button {
+    font-size: 16px;
+  }
+</style>
+<script>
+
+
+
+
+  export default {
+    data () {
+      return {
+        isInvalid: true,
+        phone: this.$route.query.phoneNumber,
+        message: '获取验证码',
+        isTrue: true,
+        loginColor: '#ccc',
+        islogin: false,
+        code: null,
+        serCode: ''
+      }
+    },
+    methods: {
+      getCode () {
+        if (!this.isInvalid) {
+          this.isInvalid = true
+          this.islogin = true
+          this.loginColor = '#f98700'
+          // 获取验证码
+          this.$.get({
+            methodName: 'SendValidateCode',
+            phoneNumber: this.phone,
+            type: '4'
+          }).then(res => {
+            if (res.data.resultCode === '100') {
+              this.serCode = res.data.validateCode
+            }
+          })
+          let time = 60
+          let countDown = setInterval(() => {
+            this.message = '重新发送' + time
+            time--
+            if (time === 0) {
+              clearInterval(countDown)
+              this.isInvalid = false
+              this.message = '获取验证码'
+            }
+          }, 1000)
+        } else {
+          console.log('不能点')
+        }
+      },
+      login () {
+        if (this.islogin) {
+            /* eslint-disable  */
+            if (this.serCode == this.code) {
+                this.$.get({
+                    methodName: 'QuickLogin',
+                    phoneNumber: this.phone,
+                    shopId: this.$route.query.shopId
+                }).then(res => {
+                    if (res.status == '200') {
+                      localStorage.setItem('user', JSON.stringify({
+                        userId: res.data.userId,
+                        shop: {
+                          id: res.data.shop.id
+                        }
+                      }))
+                    }
+                    console.log(res)
+                })
+            } else {
+                this.$.toast('验证码不正确')
+            }
+        }
+      }
+    },
+    watch: {
+      phone: function () {
+        if (!(/^1[3|4|5|7|8]\d{9}$/.test(this.phone))) {
+          this.isInvalid = true
+        } else {
+          this.isInvalid = false
+        }
+      }
+    },
+    mounted () {
+      console.log(this.$route)
+      document.title = '登录V服爱车'
+      if (this.phone) {
+        this.isInvalid = false
+        this.islogin = true
+        this.loginColor = '#f98700'
+      }
+    }
+  }
+</script>

@@ -1,0 +1,502 @@
+@import url('http://at.alicdn.com/t/font_fn3vlro4t9yvte29.css');
+
+/*css  reset*/
+
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+hr,
+p,
+blockquote,
+dl,
+dt,
+dd,
+ul,
+ol,
+li,
+pre,
+figcaption,
+figure,
+fieldset,
+legend,
+button,
+input,
+textarea,
+th,
+td {
+	margin: 0;
+	padding: 0
+}
+
+body,
+button,
+input,
+select,
+textarea {
+	font: 12px/1 Lucida Grande, 'Microsoft YaHei', "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif
+}
+
+ul,
+ol,
+li {
+	list-style: none
+}
+
+a {
+	text-decoration: none
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0
+}
+
+hr {
+	border: 0;
+	height: 1px
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+	-webkit-appearance: none !important;
+	margin: 0;
+}
+
+
+/*html, body *::-webkit-scrollbar, .noscroll::-webkit-scrollbar {
+  display: none;
+  overflow-x: hidden;
+}*/
+
+@media screen and (max-width: 320px) {
+	html {
+		font-size: 12px;
+	}
+}
+
+html {
+	min-height: 100%;
+	font-size: 13px;
+	overflow:visible;/*去除了muse-ui的overflow设置导致的scroll无法监听*/
+}
+
+body {
+	min-height: 100%;
+	-webkit-overflow-scrolling: touch;
+	background-color: #F8F8F8;
+}
+
+.mu-checkbox-icon-uncheck,
+.mu-checkbox-icon-checked {
+	color: #F98700;
+}
+
+input {
+	height: 30px;
+}
+
+#app {
+	min-height: 100%;
+}
+
+
+/*ÑÕÉ«*/
+
+.col_red {
+	color: #f02b2b;
+}
+
+.col_blue {
+	color: #548CD1;
+}
+
+.col_yellow {
+	color: #F98700;
+}
+
+.col_gay {
+	color: #929292;
+}
+
+.col_666 {
+	color: #666;
+}
+
+
+/*±ß¾à*/
+
+.m-top_10 {
+	margin-top: 10px;
+}
+
+.m-top_14 {
+	margin-top: 14px;
+}
+
+.m-bot_15 {
+	margin-bottom: 15px;
+}
+
+.m-lf_14 {
+	margin-left: 14px;
+}
+
+.p_top_10 {
+	padding-top: 10px;
+}
+
+[flex="grow"] {
+	flex: 1 1 100% !important;
+	box-sizing: border-box !important;
+}
+
+[flex="initial"] {
+	flex: 0 1 auto !important;
+	box-sizing: border-box !important;
+}
+
+[flex="auto"] {
+	flex: 1 1 auto !important;
+	box-sizing: border-box !important;
+}
+
+[flex="none"] {
+	flex: 0 0 auto !important;
+	box-sizing: border-box !important;
+}
+
+[flex="noshrink"] {
+	flex: 1 0 auto !important;
+	box-sizing: border-box !important;
+}
+
+[flex="nogrow"] {
+	flex: 0 1 auto !important;
+	box-sizing: border-box !important;
+}
+
+
+/*[align-self="flex-start"] { align-self: flex-start}*/
+
+
+/*字体颜色*/
+
+.text_red {
+	color: #f02b2b;
+}
+
+.text_bule {
+	color: #548CD1;
+}
+
+.text_orange {
+	color: #F98700;
+}
+
+.text_yellow {
+	color: #F0B500;
+}
+
+.text_gray {
+	color: #929292;
+}
+
+.text_dark {
+	color: #666;
+}
+
+
+/*按钮背景颜色*/
+
+.button_red {
+	background-color: #B40000;
+	color: #FFF;
+}
+
+.button_yellow {
+	background-color: #F0B500;
+	color: #FFF;
+}
+
+
+/*背景颜色*/
+
+.bg_gray {
+	background-color: #F3F3F3;
+}
+
+
+/*灰色*/
+
+.bg_dark {
+	background-color: rgba(0, 0, 0, 0.8);
+}
+
+.bg_f4f4f4 {
+	background-color: #f4f4f4;
+}
+
+
+/*分隔线颜色*/
+
+.line_gray {
+	background-color: #B3B3B3;
+}
+
+
+/*灰色*/
+
+.line_white {
+	background-color: #CBCBCB;
+}
+
+
+/*浅灰色*/
+
+
+/*字体大小*/
+
+@media screen and (max-width: 435px) {
+	.mini_f {
+		font-size: 13px
+	}
+	/*微型*/
+	.sm_f {
+		font-size: 16px
+	}
+	/*小型*/
+	.mid_f {
+		font-size: 18px
+	}
+	/*中型*/
+	.lg_f {
+		font-size: 21px
+	}
+	/*大型*/
+	.hg_f {
+		font-size: 25px
+	}
+	/*巨型*/
+	.hgZ_f {
+		font-size: 30px
+	}
+	/*巨型*/
+}
+
+@media screen and (max-width: 375px) {
+	.mini_f {
+		font-size: 12px
+	}
+	/*微型*/
+	.sm_f {
+		font-size: 14px
+	}
+	/*小型*/
+	.mid_f {
+		font-size: 17px
+	}
+	/*中型*/
+	.lg_f {
+		font-size: 19px
+	}
+	/*大型*/
+	.hg_f {
+		font-size: 23px
+	}
+	/*巨型*/
+	.hgZ_f {
+		font-size: 28px
+	}
+	/*巨型*/
+}
+
+
+/*字体大小*/
+
+@media screen and (max-width: 320px) {
+	.mini_f {
+		font-size: 12px;
+	}
+	/*微型*/
+	.sm_f {
+		font-size: 12px
+	}
+	/*小型*/
+	.mid_f {
+		font-size: 14px
+	}
+	/*中型*/
+	.lg_f {
+		font-size: 16px
+	}
+	/*大型*/
+	.hg_f {
+		font-size: 20px
+	}
+	/*巨型*/
+	.hgZ_f {
+		font-size: 24px
+	}
+	/*巨型*/
+}
+
+.pos_rt {
+	position: relative;
+}
+
+.min-wid_200 {
+	min-width: 100px;
+}
+
+.te_ind2 p {
+	text-indent: 2em;
+}
+
+.divide {
+	height: 8px;
+	width: 100%;
+	background-color: #f3f3f3;
+	border-top: 1px solid #d0d0d0;
+	border-bottom: 1px solid #d0d0d0;
+}
+
+.divide_no_bod {
+	height: 8px;
+	width: 100%;
+	background-color: #f3f3f3;
+}
+
+.text-right {
+	text-align: right;
+}
+
+.text-center {
+	text-align: center;
+}
+
+.pull-right {
+	float: right;
+}
+
+.pull-left {
+	float: left;
+}
+
+.primary-button {
+	height: 100%;
+	display: inline-block;
+	width: 120px;
+	text-align: center;
+	background-color: #B40000;
+	color: #fff;
+	border-radius: 4px;
+	font-size: 14px;
+}
+
+.warn {
+	background-color: #E79800;
+}
+
+.background-gray {
+	min-height: 100%;
+	/*height: 100%;*/
+	/*margin-top: 60px;*/
+	background-color: #F8F8F8;
+}
+
+.test {
+	background-color: transparent;
+	color: rgba(0, 0, 0, .87);
+	margin-bottom: 16px;
+}
+
+.mu-tab-link {
+	color: black;
+}
+
+.cells {
+	background-color: #FFFFFF;
+	line-height: 1.41176471;
+	font-size: 17px;
+	overflow: hidden;
+	position: relative;
+}
+
+.btn_style {
+	border-radius: 4px;
+	background-color: #f98700;
+	padding: 6px 8px;
+	border-style: none;
+	color: #fff;
+}
+
+.clearfix:after {
+	clear: both;
+	display: block;
+}
+
+.text-overflow {
+	word-break: keep-all;
+	/* 不换行 */
+	white-space: nowrap;
+	/* 不换行 */
+}
+
+.mint-indicator {
+	z-index: 99999999;
+}
+
+.mu-tab-link-highlight {
+	background-color: #F9981C !important;
+}
+
+.clear::after {
+	content: '';
+	display: table;
+	clear: both;
+}
+
+/*start loading*/
+.img-loading {
+	width: 30px;
+	height: 30px;
+	border-radius: 50%;
+	border: 5px solid #BEBEBE;
+	border-left: 5px solid #498aca;
+	animation: load 1s linear infinite;
+	-moz-animation: load 1s linear infinite;
+	-webkit-animation: load 1s linear infinite;
+	-o-animation: load 1s linear infinite;
+}
+
+@-webkit-keyframes load {
+	from {
+		-webkit-transform: rotate(0deg);
+	}
+	to {
+		-webkit-transform: rotate(360deg);
+	}
+}
+
+@-moz-keyframes load {
+	from {
+		-moz-transform: rotate(0deg);
+	}
+	to {
+		-moz-transform: rotate(360deg);
+	}
+}
+
+@-o-keyframes load {
+	from {
+		-o-transform: rotate(0deg);
+	}
+	to {
+		-o-transform: rotate(360deg);
+	}
+}
+/*end loading*/

@@ -1,0 +1,1065 @@
+import Vue from 'vue'
+import Router from 'vue-router'
+import routes_carFriend from './routes_carFriend'
+
+Vue.use(Router)
+
+// carFriend 相关路由信息
+let car_friend_routes = routes_carFriend
+
+// 其他
+let other_routes = [{
+		path: '/seeGoods',
+		component: resolve => require(['../pages/seeGoods/goodsList'], resolve)
+	}, {
+		path: '/eve_luckyDraw/:activityId', // 幸运大转盘 方
+		name: 'eve_luckyDraw',
+		component: resolve => require(['../pages/events/eve_luckyDraw'], resolve),
+		meta: {
+			keepAlive: false
+		}
+	}, {
+		path: '/eve_robRedPacket/:activityId', // 抢红包活动
+		name: 'eve_robRedPacket',
+		component: resolve => require(['../pages/events/eve_robRedPacket'], resolve)
+	}, {
+		path: '/eve_shakes/:activityId', // 摇一摇活动
+		name: 'eve_shakes',
+		component: resolve => require(['../pages/events/eve_shakes'], resolve)
+	}, {
+		path: '/JS_RECENTACTIVITY', // 活动列表
+		name: 'JS_RECENTACTIVITY',
+		component: resolve => require(['../pages/events/eve_list'], resolve),
+		meta: {
+			keepAlive: true,
+			native: true,
+			title: '近期活动'
+		}
+	}, {
+		path: '/eve_listAll/:type/:id', // 所有活动 中转页
+		name: 'eve_listAll',
+		component: resolve => require(['../pages/events/eve_listAll'], resolve)
+	}, {
+		path: '/eve_luckyDraw_two/:activityId', // 幸运大转盘 圆
+		name: 'eve_luckyDraw_two',
+		component: resolve => require(['../pages/events/eve_luckyDraw_two'], resolve),
+		meta: {
+			keepAlive: false
+		}
+	}, {
+		path: '/eve_robBuy/:activityId',
+		name: 'eve_robBuy', // N元抢购
+		component: resolve => require(['../pages/events/eve_robBuy'], resolve),
+		meta: {
+			keepAlive: false
+		}
+	}, {
+		path: '/eve_helpBargain/:activityId', // 帮砍价
+		name: 'eve_helpBargain',
+		component: resolve => require(['../pages/events/eve_helpBargain'], resolve),
+		meta: {
+			keepAlive: false
+		}
+	}, {
+		path: '/eve_timeSpike/:activityId', // 限时秒杀
+		name: 'eve_timeSpike',
+		component: resolve => require(['../pages/events/eve_timeSpike'], resolve),
+		meta: {
+			keepAlive: false
+		}
+	}, {
+		path: '/eve_myPrize/:activityId', // 我的奖品
+		name: 'eve_myPrize',
+		component: resolve => require(['../pages/events/eve_myPrize'], resolve)
+	}, {
+		path: '/eve_groupShopping/:activityId', // 团拼购
+		name: 'eve_groupShopping',
+		component: resolve => require(['../pages/events/eve_groupShopping'], resolve),
+		meta: {
+			keepAlive: false,
+			native: true
+		}
+	}, {
+		path: '/eve_robBuyDetails/:id/:activityId', // N元抢购详情
+		name: 'eve_robBuyDetails',
+		component: resolve => require(['../pages/events/eve_robBuyDetails'], resolve),
+		meta: {
+			auth: true,
+			keepAlive: false
+		}
+	}, {
+		path: '/eve_helpBargainRecord/:activityId', // 帮砍价记录
+		name: 'eve_helpBargainRecord',
+		component: resolve => require(['../pages/events/eve_helpBargainRecord'], resolve),
+		meta: {
+			auth: true, // 帮砍价记录
+			keepAlive: false
+		}
+	},
+	{
+		path: '/eve_smart_message', // 智能到店微信消息
+		name: 'eve_smart_message',
+		component: resolve => require(['../pages/events/eve_smart_message'], resolve)
+	},
+	{
+		path: '/eve_helpBargainDetails/:id/:activityId/:userId',
+		name: 'eve_helpBargainDetails', // 分享帮砍价页面
+		component: resolve => require(['../pages/events/eve_helpBargainDetails'], resolve)
+	}, {
+		path: '/eve_helpDetail/:id/:activityId',
+		name: 'eve_helpDetail', // 帮砍价详情
+		component: resolve => require(['../pages/events/eve_helpDetail'], resolve)
+	}, {
+		path: '/eve_helpSuccess/:money', // 助力成功页
+		name: 'eve_helpSuccess',
+		component: resolve => require(['../pages/events/eve_helpSuccess'], resolve)
+	}, {
+		path: '/eve_helpError/:errorCode', // 助力失败页
+		name: 'eve_helpError',
+		component: resolve => require(['../pages/events/eve_helpError'], resolve)
+	}, {
+		path: '/eve_timeSpikeDetails/:id/:activityId', // 限时秒杀详情页
+		name: 'eve_timeSpikeDetails',
+		component: resolve => require(['../pages/events/eve_timeSpikeDetails'], resolve)
+	}, {
+		path: '/eve_groupShoppingDetails/:id/:activityId', // 团拼购详情
+		name: 'eve_groupShoppingDetails',
+		component: resolve => require(['../pages/events/eve_groupShoppingDetails'], resolve)
+	}, {
+		path: '/eve_userRecord/:activityId', // N元抢购 用户参与记录
+		name: 'eve_userRecord',
+		component: resolve => require(['../pages/events/eve_userRecord'], resolve),
+		meta: {
+			keepAlive: true
+		}
+	}, {
+		path: '/eve_toAnnounce/:id/:activityId', // N元抢购 往期结果
+		name: 'eve_toAnnounce',
+		component: resolve => require(['../pages/events/eve_toAnnounce'], resolve)
+	}, {
+		path: '/eve_recommend/:activityId', // 推荐有礼
+		name: 'eve_recommend',
+		component: resolve => require(['../pages/events/eve_recommend'], resolve)
+	}, {
+		path: '/eve_Invitation/:activityId', // 推荐有礼 我的邀请
+		name: 'eve_Invitation',
+		component: resolve => require(['../pages/events/eve_Invitation'], resolve)
+	}, {
+		path: '/eve_announceDetail/:id/:activityId/:item',
+		name: 'eve_announceDetail', // N元抢购 往期结果 详情
+		component: resolve => require(['../pages/events/eve_announceDetail'], resolve)
+	}, {
+		path: '/qr_code', // 二维码
+		name: 'qr_code',
+		component: resolve => require(['../pages/share/qr_code'], resolve)
+	}, {
+		path: '/register/:id/:activityId/:inviteWay', // 注册旧
+		name: 'register',
+		component: resolve => require(['../pages/share/register'], resolve)
+	}, {
+		path: '/signup', // 注册
+		name: 'signup',
+		component: resolve => require(['../pages/share/signup'], resolve),
+		meta: {
+			title: '注册'
+		}
+	}, {
+		path: '/setPassword', // 注册设置密码
+		name: 'setPassword',
+		component: resolve => require(['../pages/share/setPassword'], resolve),
+		meta: {
+			title: '注册'
+		}
+	}, {
+		path: '/login', // 登录
+		name: 'login',
+		component: resolve => require(['../pages/share/login'], resolve),
+		meta: {
+			title: '会员中心'
+		}
+	}, {
+		path: '/register_success', // 注册成功
+		name: 'register_success',
+		component: resolve => require(['../pages/share/register_success'], resolve)
+	}, {
+		path: '/rrp_index',
+		component: resolve => require(['../pages/robRedPacket/rrp_index'], resolve)
+	}, {
+		path: '/eve_paySuccess', //  获取支付成功页
+		component: resolve => require(['../pages/events/eve_paySuccess'], resolve)
+	}, {
+		path: '/eve_submitOrder',
+		component: resolve => require(['../pages/events/eve_submitOrder.vue'], resolve)
+	}, {
+		path: '/hb_list',
+		component: resolve => require(['../pages/helpBargain/hb_list'], resolve)
+	}, {
+		path: '/goodsDetails', // 商品详情
+		component: resolve => require(['../pages/seeGoods/sg_goodsDetails'], resolve)
+	}, {
+		path: '/sg_goods/:id/:name', // 普通商品详情
+		name: 'sg_goods',
+		component: resolve => require(['../pages/seeGoods/sg_goods'], resolve),
+		meta: {}
+	}, {
+		path: '/sg_goods_panorama',
+		name: 'sg_goods_panorama',
+		component: resolve => require(['../pages/seeGoods/sg_goods_panorama'], resolve),
+		meta: {
+			auth: true,
+			keepAlive: false
+		}
+	}, {
+		path: '/sg_goods_car/:id/:name', // 整车商品详情
+		name: 'sg_goods_car',
+		component: resolve => require(['../pages/seeGoods/sg_goods_car'], resolve),
+		meta: {
+			// keepAlive: true
+		}
+	}, {
+		path: '/sg_goodsList', // 商品列表
+		name: 'sg_goodsList',
+		component: resolve => require(['../pages/seeGoods/sg_goodsList'], resolve),
+		meta: {
+			keepAlive: true
+		}
+	}, {
+		path: '/sg_searchResult', // 搜索
+		name: 'sg_searchResult',
+		component: resolve => require(['../pages/seeGoods/sg_searchResult'], resolve),
+		meta: {
+			keepAlive: true
+		}
+	}, {
+		path: '/payResult/:type/:activityId',
+		name: 'payResult',
+		component: resolve => require(['../components/payResult'], resolve),
+		meta: {
+			keepAlive: true
+		}
+	}, {
+		path: '/orderlist/:status', // 订单列表
+		name: 'orderlist',
+		component: resolve => require(['../pages/orders/o_ordersList'], resolve),
+		meta: {
+			auth: true,
+			keepAlive: false
+		}
+	}, {
+		path: '/orderManage', // 订单管理
+		name: 'orderManage',
+		component: resolve => require(['../pages/orders/o_ordersManage'], resolve),
+		meta: {
+			auth: true,
+			keepAlive: false
+		}
+	}, {
+		path: '/integralMall',
+		component: resolve => require(['../pages/orders/o_integralMall'], resolve)
+	}, {
+		path: '/o_orderConfirm',
+		name: 'o_orderConfirm', // 订单确认
+		component: resolve => require(['../pages/orders/o_orderConfirm'], resolve),
+		meta: {
+			auth: true,
+			keepAlive: false
+		}
+	}, {
+		path: '/o_return',
+		name: 'o_return', // 退货信息
+		component: resolve => require(['../pages/orders/o_return'], resolve)
+	}, {
+		path: '/o_coupon',
+		name: 'o_coupon', // 优惠券 会员卡
+		component: resolve => require(['../pages/orders/o_coupon'], resolve)
+	}, {
+		path: '/o_invoice',
+		name: 'o_invoice', // 发票详情
+		component: resolve => require(['../pages/orders/o_invoice'], resolve)
+	}, {
+		path: '/o_invoiceList', // 发票列表
+		name: 'o_invoiceList',
+		component: resolve => require(['../pages/orders/o_invoiceList'], resolve),
+		meta: {
+			auth: true,
+			keepAlive: true
+		}
+	}, {
+		path: '/o_transport', // 收货地址
+		name: 'o_transport',
+		component: resolve => require(['../pages/orders/o_transport'], resolve)
+	}, {
+		path: '/o_returnDetail',
+		name: 'o_returnDetail',
+		component: resolve => require(['../pages/orders/o_returnDetail'], resolve)
+	}, {
+		path: '/o_transportEdit', // 编辑收货地址
+		name: 'o_transportEdit',
+		component: resolve => require(['../pages/orders/o_transportEdit'], resolve)
+	}, {
+		path: '/o_fillInTransport',
+		name: 'o_fillInTransport',
+		component: resolve => require(['../pages/orders/o_fillInTransport'], resolve)
+	}, {
+		path: '/o_trace',
+		name: 'o_trace',
+		component: resolve => require(['../pages/orders/o_trace'], resolve)
+	}, {
+		path: '/orderDetail/:orderId', // 订单详情
+		name: 'orderDetail',
+		component: resolve => require(['../pages/orders/o_orderDetails'], resolve),
+		meta: {
+			native: true
+		}
+	}, {
+		path: '/result',
+		name: 'result',
+		component: resolve => require(['../pages/orders/o_result'], resolve)
+	}, {
+		path: '/mine',
+		component: resolve => require(['../pages/orders/o_mine'], resolve)
+	}, {
+		path: '/realName', // 实名认证
+		name: 'realName',
+		component: resolve => require(['../pages/realNameCertification/rc_realNameCertification.vue'], resolve),
+		meta: {
+			auth: true,
+			keepAlive: false
+		}
+	}, {
+		path: '/realNameHas', // 已经实名认证
+		name: 'realNameHas',
+		component: resolve => require(['../pages/realNameCertification/re_realNameHas.vue'], resolve),
+		meta: {
+			auth: true,
+			keepAlive: false
+		}
+	}, {
+		path: '/collection',
+		name: 'collection', // 收藏夹
+		component: resolve => require(['../pages/collection/c_collection.vue'], resolve),
+		meta: {
+			auth: true,
+			keepAlive: false
+		}
+	}, {
+		path: '/asc_shoppingCart', // 购物车
+		name: 'asc_shoppingCart',
+		component: resolve => require(['../pages/addShoppingCart/asc_shoppingCart.vue'], resolve),
+		meta: {
+			auth: true,
+			keepAlive: false
+		}
+	}, {
+		path: '/vb_integralRule', // 积分规则
+		component: resolve => require(['../pages/VBuy/vb_integralRule'], resolve)
+	}, {
+		path: '/vb_integralList', // 积分明细
+		name: 'vb_integralList',
+		component: resolve => require(['../pages/VBuy/vb_integralList'], resolve)
+	}, {
+		path: '/vb_vipRights/:vipRank', // 会员权益
+		name: 'vb_vipRights',
+		component: resolve => require(['../pages/VBuy/vb_vipRights'], resolve)
+	}, {
+		path: '/vb_vBeanList', // V豆明细
+		name: 'vb_vBeanList',
+		component: resolve => require(['../pages/VBuy/vb_vBeanList'], resolve)
+	}, {
+		path: '/vb_beanCardRule', // 卡豆规则
+		component: resolve => require(['../pages/VBuy/vb_beanCardRule'], resolve)
+	}, {
+		path: '/vb_vipRule', // 会员等级
+		component: resolve => require(['../pages/VBuy/vb_vipRule'], resolve),
+		meta: {
+			auth: true,
+			keepAlive: false
+		}
+	}, {
+		path: '/vb_integralMall', // V豆换购
+		name: 'vb_integralMall',
+		component: resolve => require(['../pages/VBuy/vb_integralMall'], resolve),
+		meta: {
+			auth: true,
+			keepAlive: true
+		}
+	}, {
+		path: '/l_logistics/:shippingSn',
+		name: 'l_logistics',
+		component: resolve => require(['../pages/logistics/l_logistics'], resolve)
+	}, {
+		path: '/payment',
+		name: 'payment',
+		component: resolve => require(['../pages/payment/p_payment'], resolve)
+	},
+
+	//  会员卡和充值都 使用了新的页面  可以考虑删除这两个配置理由和相应文件
+	//  {
+	//   path: '/p_purse', 
+	//   name: 'p_purse',
+	//   component: resolve => require(['../pages/purse/p_purse'], resolve)
+	// }, {
+	//   path: '/charge',
+	//   name: 'charge', // 充值
+	//   component: resolve => require(['../pages/purse/charge'], resolve)
+	// },
+	{
+		path: '/el_evaluationList',
+		component: resolve => require(['../pages/evaluation/el_evaluationList'], resolve)
+	}, {
+		path: '/el_selfEvaluation', // 订单评价
+		name: 'el_selfEvaluation',
+		component: resolve => require(['../pages/evaluation/el_selfEvaluation'], resolve)
+	}, {
+		path: '/el_selfEvaluation_view', // 查看评价
+		name: 'el_selfEvaluation_view',
+		component: resolve => require(['../pages/evaluation/el_selfEvaluation_view'], resolve)
+	}, {
+		path: '/cb_bill',
+		name: 'cb_bill',
+		component: resolve => require(['../pages/consumerBill/cb_bill'], resolve)
+	}, {
+		path: '/cb_couponInfo',
+		name: 'cb_couponInfo',
+		component: resolve => require(['../pages/consumerBill/cb_couponInfo'], resolve)
+	}, {
+		path: '/cb_billList',
+		name: 'cb_billList',
+		component: resolve => require(['../pages/consumerBill/cb_billList'], resolve)
+	}, {
+		path: '/cb_card',
+		name: 'cb_card', // 卡券
+		component: resolve => require(['../pages/consumerBill/cb_card'], resolve),
+		meta: {
+			native: true
+		}
+	}, {
+		path: '/cb_cardDetail', // 卡券详情
+		name: 'cb_cardDetail',
+		component: resolve => require(['../pages/consumerBill/cb_cardDetail'], resolve)
+	}, {
+		path: '/cb_forRight', // 会员权益
+		name: 'cb_forRight',
+		component: resolve => require(['../pages/consumerBill/cb_forRight'], resolve)
+	}, {
+		path: '/cb_VDetail',
+		name: 'cb_VDetail', // V豆详情
+		component: resolve => require(['../pages/consumerBill/cb_VDetail'], resolve),
+		meta: {
+			keepAlive: true
+		}
+	}, {
+		path: '/cb_recharge',
+		name: 'cb_recharge',
+		component: resolve => require(['../pages/consumerBill/cb_recharge'], resolve)
+	}, {
+		path: '/cb_record', // V豆使用记录
+		name: 'cb_record',
+		component: resolve => require(['../pages/consumerBill/cb_record'], resolve)
+	}, {
+		path: '/channel/:categoryId?',
+		name: 'channel', // 我的文章 爱车频道
+		props: true,
+		component: resolve => require(['../pages/VBuy/channel.vue'], resolve),
+		meta: {
+			keepAlive: false
+		}
+	}, {
+		path: '/channelDetail', // 文章详情
+		name: 'channelDetail',
+		component: resolve => require(['../pages/VBuy/channelDetail.vue'], resolve)
+	}, {
+		path: '/cb_billDiagram',
+		name: 'cb_billDiagram', // 用车账单
+		component: resolve => require(['../pages/consumerBill/cb_billDiagram'], resolve),
+		meta: {
+			// keepAlive: true
+		}
+	}, {
+		path: '/banner_vr', // 我的--车友活动
+		name: 'banner_vr',
+		component: resolve => require(['../pages/bannerVr/banner_vr'], resolve),
+	}, {
+		path: '/Baidumap/:address', // 百度地图
+		name: 'Baidumap',
+		component: resolve => require(['../components/Baidumap'], resolve),
+	},
+	{
+		path: '/communication_card', // 通讯卡
+		name: 'communication_card',
+		component: resolve => require(['../pages/communicationCard/CommunicationCard'], resolve),
+		meta: {
+			native: true
+		}
+	},
+	{
+		path: '/recharge-centre/:simId/:number/:tab', // 充值中心
+		name: 'recharge-centre',
+		component: resolve => require(['../pages/communicationCard/RechargeCentre'], resolve),
+	},
+	{
+		path: '/recharge-record/:simId', // 充值记录
+		name: 'recharge-record',
+		component: resolve => require(['../pages/communicationCard/RechargeRecord'], resolve),
+	},
+	{
+		path: '/expenses-record/:simId', // 消费记录
+		name: 'expenses-record',
+		component: resolve => require(['../pages/communicationCard/ExpensesRecord'], resolve),
+	},
+	/**
+	 * H5 新加的 页面
+	 */
+	// {
+	//   path: '/my_pages', // 我的
+	//   name: 'my_pages',
+	//   component: resolve => require(['../pages/myPages/my_pages'], resolve),
+	// },
+	//YYYYYYYYYYYYYYYYYYYYYYYY
+	{
+		path: '/car-list', //车辆列表
+		name: 'car-list',
+		component: resolve => require(['../pages/car/car-list'], resolve),
+		meta: {
+			auth: true
+		}
+	},
+
+	{
+		path: '/car-add',
+		name: 'car-add',
+		// component: require('pages/car-add'),
+		component: resolve => require(['../pages/car/car-add'], resolve),
+		meta: {
+			// title: '添加车辆',
+			auth: true
+		}
+	},
+	// {
+	//   path: '/car-bill',
+	//   name: 'car-bill',
+	//   // component: require('pages/car-bill'),
+	//   component: resolve => require(['../pages/car/car-bill'], resolve), 
+	//   meta: {
+	//     // title: '用车账单',
+	//     auth: true
+	//   }
+	// },
+	{
+		path: '/car-edit',
+		name: 'car-edit',
+		// component: require('pages/car-edit'),
+		component: resolve => require(['../pages/car/car-edit'], resolve),
+		meta: {
+			// title: '编辑车辆',
+			auth: true
+		}
+	},
+	{
+		path: '/car-edit-basic-info',
+		name: 'car-edit-basic-info',
+		component: resolve => require(['../pages/car/car-edit-basic-info'], resolve),
+		// component: require('pages/car-edit-basic-info'),
+		meta: {
+			// title: '基本信息',
+			auth: true
+		}
+	},
+
+	{
+		path: '/add-friend-car', // 添加好友车辆
+		name: 'add-friend-cars',
+		component: resolve => require(['../pages/car/add-friend-car'], resolve),
+	},
+	{
+		path: '/car-moving-data',
+		name: 'car-moving-data',
+		component: resolve => require(['../pages/car/car-moving-data'], resolve),
+		// component: require('pages/car-moving-data'),
+		meta: {
+			// title: '行车数据',
+			auth: true
+		}
+	},
+	{
+		path: '/car-rails',
+		name: 'car-rails',
+		// component: require('pages/car-rails'),
+		component: resolve => require(['../pages/car/car-rails'], resolve),
+		meta: {
+			// title: '围栏设置',
+			auth: true
+		}
+	},
+	{
+		path: '/car-rails-edit',
+		name: 'car-rails-edit',
+		// component: require('pages/car-rails-edit'),
+		component: resolve => require(['../pages/car/car-rails-edit'], resolve),
+		meta: {
+			// title: '设置围栏',
+			auth: true
+		}
+	},
+	{
+		path: '/car-share-request',
+		name: 'car-share-request',
+		// component: require('pages/car-share-request'),
+		component: resolve => require(['../pages/car/car-share-request'], resolve),
+		meta: {
+			// title: '共享申请',
+			auth: true
+		}
+	},
+	{
+		path: '/car-test',
+		name: 'car-test',
+		// component: require('pages/car-test'),
+		component: resolve => require(['../pages/car/car-test'], resolve),
+		meta: {
+			// title: '全车体检',
+			auth: true,
+			noTransition: true
+		}
+	},
+
+	{
+		path: '/car-location',
+		name: 'car-location',
+		// component: require('pages/car-location'),
+		component: resolve => require(['../pages/car/car-location'], resolve),
+		meta: {
+			// title: '实时定位',
+			auth: true
+		}
+	},
+
+	{
+		path: '/car-examination',
+		name: 'car-examination',
+		// component: require('pages/car-examination'),
+		component: resolve => require(['../pages/car/car-examination'], resolve),
+		meta: {
+			// title: '全车体检',
+			auth: true
+		}
+	},
+	{
+		path: '/car-examinationning',
+		name: 'car-examinationning',
+		// component: require('pages/car-examinationning'),
+		component: resolve => require(['../pages/car/car-examinationning'], resolve),
+		meta: {
+			// title: '全车体检',
+			auth: true
+		}
+	},
+
+	{
+		path: '/article-show',
+		name: 'article-show',
+		// component: require('pages/article-show'),
+		component: resolve => require(['../pages/car/article-show'], resolve),
+		meta: {
+			title(currentRoute) {
+				if(currentRoute.query.title) {
+					return currentRoute.query.title
+				} else {
+					return '详细内容'
+				}
+			},
+			noTransition: true
+		}
+	},
+
+	{
+		path: '/auto-forum',
+		name: 'auto-forum',
+		// component: require('pages/auto-forum'),
+		component: resolve => require(['../pages/car/auto-forum'], resolve),
+		// meta: {
+		//   title: '爱车频道'
+		// }
+	},
+
+	{
+		path: '/bind-device',
+		name: 'bind-device',
+		// component: require('pages/bind-device'),
+		component: resolve => require(['../pages/car/bind-device'], resolve),
+		meta: {
+			// title: '绑定设备',
+			auth: true
+		}
+	},
+
+	{
+		path: '/bill-detail',
+		name: 'bill-detail',
+		// component: require('pages/bill-detail'),
+		component: resolve => require(['../pages/car/bill-detail'], resolve),
+		meta: {
+			// title: '账单明细',
+			auth: true
+		}
+	},
+
+	//优惠券
+	{
+		path: '/router-coupon',
+		name: 'router-coupon',
+		// component: require('pages/router-coupon'),
+		component: resolve => require(['../pages/car/router-coupon'], resolve),
+		meta: {
+			// title: '优惠券',
+			auth: true
+		}
+	},
+	//领取优惠券   （首页进入）
+	{
+		path: '/get-coupon',
+		name: 'get-coupon',
+		// component: require('pages/get-coupon'),
+		component: resolve => require(['../pages/car/get-coupon'], resolve),
+		meta: {
+			// title: '优惠券',
+			auth: true
+		}
+	},
+	//优惠券详情页
+	{
+		path: '/coupon-info',
+		name: 'coupon-info',
+		component: resolve => require(['../pages/car/coupon-info'], resolve),
+		meta: {
+			// title: '优惠券详情',
+			auth: true
+		}
+	},
+
+	// {
+	//   path: '/drive-achievement',
+	//   name: 'drive-achievement',
+	//   // component: require('pages/drive-achievement'),
+	//   component: resolve => require(['../pages/car/drive-achievement'], resolve),
+	//   meta: {
+	//     // title: '驾驶成就',
+	//     auth: true
+	//   }
+	// }, 
+
+	{
+		path: '/driving-record',
+		name: 'driving-record',
+		// component: require('pages/driving-record'),
+		component: resolve => require(['../pages/car/driving-record'], resolve),
+		meta: {
+			title: '行车记录',
+			auth: true
+		}
+	},
+
+	{
+		path: '/iframe-content',
+		name: 'iframe-content',
+		// component: require('pages/iframe-content'),
+		component: resolve => require(['../pages/car/iframe-content'], resolve),
+		meta: {
+			// title: '详细内容'
+		}
+	},
+
+	{
+		path: '/insurance-company',
+		name: 'insurance-company',
+		component: resolve => require(['../pages/car/insurance-company'], resolve),
+		meta: {
+			// title: '保险公司',
+			auth: true
+		}
+	},
+	{
+		path: '/insurance-information',
+		name: 'insurance-information',
+		component: resolve => require(['../pages/car/insurance-information'], resolve),
+		meta: {
+			// title: '保险信息',
+			auth: true
+		}
+	},
+
+	{
+		path: '/insurance-list',
+		name: 'insurance-list',
+		component: resolve => require(['../pages/car/insurance-list'], resolve),
+		meta: {
+			// title: '车辆保险',
+			auth: true
+		}
+	},
+
+	{
+		path: '/maintain-information',
+		name: 'maintain-information',
+		component: resolve => require(['../pages/car/maintain-information'], resolve),
+		meta: {
+			// title: '保养信息',
+			auth: true
+		}
+	},
+
+	// {
+	//   path: '/maintain-record',
+	//   name: 'maintain-record',
+	//   component: resolve => require(['../pages/car/maintain-record'], resolve),
+	//   meta: {
+	//     // title: '维保记录',
+	//     auth: true
+	//   }
+	// },
+
+	{
+		path: '/create-bill',
+		name: 'create-bill',
+		component: resolve => require(['../pages/car/create-bill'], resolve),
+		meta: {
+			// title: '添加账单',
+			auth: true
+		}
+
+	},
+
+	{
+		path: '/map',
+		name: 'map',
+		component: resolve => require(['../pages/car/map'], resolve),
+		meta: {
+			// title: '地图',
+			auth: true
+		}
+	},
+
+	{
+		path: '/mot-information',
+		name: 'mot-information',
+		component: resolve => require(['../pages/car/mot-information'], resolve),
+		meta: {
+			// title: '年检信息',
+			auth: true
+		}
+	},
+
+	// {
+	// 	path: '/onekey-help',
+	//   name: 'onekey-help',
+	//   component: resolve => require(['../pages/car/onekey-help'], resolve),
+	//   meta:{
+	//       title:'一键救援',
+	//       auth:true
+	//    }
+	//  },
+
+	{
+		path: '/path-navigation',
+		name: 'path-navigation',
+		component: resolve => require(['../pages/car/path-navigation'], resolve),
+		meta: {
+			// title: '出行导航',
+			auth: true
+		}
+	},
+
+	{
+		path: '/picture-show',
+		name: 'picture-show',
+		component: resolve => require(['../pages/car/picture-show'], resolve),
+		meta: {
+			// title: '显示照片'
+		}
+	},
+
+	//促销详情页
+	{
+		path: '/promotion-info',
+		name: 'promotion-info',
+		component: resolve => require(['../pages/car/promotion-info'], resolve),
+		meta: {
+			// title: '活动详情',
+			auth: true
+		}
+	},
+
+	{
+		path: '/running-tracks',
+		name: 'running-tracks',
+		component: resolve => require(['../pages/car/running-tracks'], resolve),
+		meta: {
+			// title: '行车轨迹',
+			auth: true
+		}
+	},
+
+	{
+		path: '/running-tracks-detail',
+		name: 'running-tracks-detail',
+		component: resolve => require(['../pages/car/running-tracks-detail'], resolve),
+		meta: {
+			// title: '轨迹详情',
+			auth: true
+		}
+	},
+
+	{
+		path: '/running-tracks-stop',
+		name: 'running-tracks-stop',
+		component: resolve => require(['../pages/car/running-tracks-stop'], resolve),
+		meta: {
+			title: '停车信息',
+			auth: true
+		}
+	},
+
+	//  促销列表页
+	{
+		path: '/sales-promotion',
+		name: 'sales-promotion',
+		component: resolve => require(['../pages/car/sales-promotion'], resolve),
+		meta: {
+			// title: '最新促销',
+			auth: true
+		}
+	},
+
+	{
+		path: '/terminal-data-flow-show',
+		name: 'terminal-data-flow-show',
+		component: resolve => require(['../pages/car/terminal-data-flow-show'], resolve),
+		meta: {
+			// title: '数据流监测',
+			auth: true,
+			noTransition: true
+		}
+	},
+
+	{
+		path: '/terminal-data-flow-select',
+		name: 'terminal-data-flow-select',
+		// component: require('pages/terminal-data-flow-select'),
+		component: resolve => require(['../pages/car/terminal-data-flow-select'], resolve),
+		meta: {
+			// title: '选择数据流监测项',
+			auth: true,
+			noTransition: true
+		}
+	},
+
+	{
+		path: '/terminal-params-update',
+		name: 'terminal-params-update',
+		// component: require('pages/terminal-params-update'),
+		component: resolve => require(['../pages/car/terminal-params-update'], resolve),
+		meta: {
+			// title: '参数编辑',
+			auth: true,
+			noTransition: true
+		}
+	},
+	{
+		path: '/terminal-file-update',
+		name: 'terminal-file-update',
+		// component: require('pages/terminal-file-update'),
+		component: resolve => require(['../pages/car/terminal-file-update'], resolve),
+		meta: {
+			// title: '文件升级',
+			auth: true,
+			noTransition: true
+		}
+	},
+
+	{
+		path: '/video-show',
+		name: 'video-show',
+		// component: require('pages/video-show'),
+		component: resolve => require(['../pages/car/video-show'], resolve),
+		meta: {
+			// title: '显示视频'
+		}
+	},
+
+	{
+		path: '/vehicle-instrument',
+		name: 'vehicle-instrument',
+//		component: resolve => require(['../pages/car/vehicle-instrument'], resolve),
+		component:require.ensure([], function(){resolve(require('../pages/car/vehicle-instrument'));}, 'list'),
+		meta: {
+			// title: '车辆仪表',
+			auth: true
+		}
+	},
+	{
+		path: '/vehicle-instrument-detail',
+		name: 'vehicle-instrument-detail',
+		component: resolve => require(['../pages/car/vehicle-instrument-detail'], resolve),
+		meta: {
+			// title: '详细信息',
+			auth: true
+		}
+	},
+	{
+		path: '/vehicle-instrument-hud',
+		name: 'vehicle-instrument-hud',
+		component: resolve => require(['../pages/car/vehicle-instrument-hud'], resolve),
+		meta: {
+			// title: 'hud模式',
+			auth: true
+		}
+	},
+	///////yyyyyyyyyyyyyy
+	{
+		path: '/peccancy-query', // 违章查询
+		name: 'peccancy-query',
+		component: resolve => require(['../pages/car/peccancy-query'], resolve),
+		meta: {
+			auth: true
+		}
+	},
+	{
+		path: '/peccancy-query-detail', // 违章查询结果
+		name: 'peccancy-query-detail',
+		component: resolve => require(['../pages/car/peccancy-query-detail'], resolve),
+	},
+	{
+		path: '/car-map', // 爱车服务
+		name: 'car-map',
+		component: resolve => require(['../pages/car/car-map'], resolve),
+	},
+	{
+		path: '/qrcode', // 爱车服务
+		name: 'qrcode',
+		component: resolve => require(['../pages/qrcode/qrcode'], resolve),
+	},
+	{
+		path: '/shop-nearby', // 爱车服务
+		name: 'shop-nearby',
+		component: resolve => require(['../pages/shopNearby/shoplist'], resolve),
+	},
+	// {
+	//   path: '/test', // 
+	//   name: 'test',
+	//   component: resolve => require(['../pages/test'], resolve),
+	// },
+	// {
+	//   path: '/vehicle-instrument', // 车辆仪表
+	//   name: 'vehicle-instrument',
+	//   component: resolve => require(['../pages/vehicle/vehicle-instrument'], resolve),
+	// },
+	{
+		path: '*',
+		redirect: '/orderManage'
+	}
+]
+let routes = [...car_friend_routes, ...other_routes]
+
+export default new Router({
+	routes
+})

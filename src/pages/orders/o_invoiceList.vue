@@ -1,0 +1,296 @@
+<template>
+  <div class="background-gray" id="e_transport">
+
+    <icar-header bgColor="#F7F7F7" mainText="发票信息" textColor="#474747">
+      <img :src="left" >
+    </icar-header>
+    <scroll :bottom="true" marginBottom="0">
+    <mu-flat-button label="＋添加发票信息" class="flat-button" backgroundColor="#F98700" v-tap="{methods: edit}" color="#FFF"/>
+
+    <empty v-if="invoiceList.length === 0" message="暂时没有发票信息, 快去添加吧~">
+
+    </empty>
+    <div v-else>
+      <div class="one_way" layout="column" v-for="item in invoiceList"  v-if="isForChose">
+        <preview :left="true" v-tap="{methods: chose, item: item}">
+          <preview-item label="发票抬头" :value="item.invoiceTitle"></preview-item>
+          <preview-item label="联系人" :value="item.contacts"></preview-item>
+          <preview-item label="联系电话" :value="item.mobile"></preview-item>
+          <preview-item label="详细地址" :value="item.areaName + item.address"></preview-item>
+        </preview>
+        <mu-divider shallowInset/>
+
+        <div flex layout="row" layout-align="space-between center">
+          <mu-radio  slot="value" flex name="payway" label="选择" v-model="isChose" :nativeValue="item" uncheckIcon="panorama_fish_eye" checkedIcon="check_circle"/>
+          <div flex class="text-right">
+            <img :src="edit1" v-tap="{methods: edit, value: item}" height="22" class="edit">
+            <img :src="rubbish" v-tap="{methods: openModel, id: item.id}" height="16">
+          </div>
+        </div>
+      </div>
+
+      <div class="one_way" layout="column" v-for="item in invoiceList" v-if="!isForChose">
+        <preview :left="true">
+          <preview-item label="发票抬头" :value="item.invoiceTitle"></preview-item>
+          <preview-item label="联系人" :value="item.contacts"></preview-item>
+          <preview-item label="联系电话" :value="item.mobile"></preview-item>
+          <preview-item label="详细地址" :value="item.areaName + item.address"></preview-item>
+        </preview>
+        <mu-divider shallowInset/>
+        <div flex layout="row" layout-align="space-between center">
+          <mu-radio  slot="value" flex name="payway" label="默认" v-model="isDefault" :nativeValue="item" uncheckIcon="panorama_fish_eye" checkedIcon="check_circle"/>
+          <div flex class="text-right">
+            <img :src="edit1" v-tap="{methods: edit, value: item}" height="22" class="edit">
+            <img :src="rubbish" v-tap="{methods: openModel, id: item.id}" height="16">
+          </div>
+        </div>
+      </div>
+    </div>
+    </scroll>
+    <model :isShow="isShow" v-on:closeIsModel="openModel" title=" ">
+      您确定要删除该发票信息?
+    </model>
+
+  </div>
+</template>
+
+<script>
+	import Vue from 'vue'
+  import icarHeader from 'components/my-header'
+  import left from 'assets/left-gray.svg'
+
+  import model from 'components/model'
+  import preview from 'components/preview'
+  import previewItem from 'components/preview-item.vue'
+  import Order from 'tools/order.service.js'
+  import rubbish from 'assets/rubbish.svg'
+  import edit1 from 'assets/edit1.svg'
+  import empty from 'components/empty-page.vue'
+  import scroll from 'components/scroll'
+  let order = Order.getInstance()
+
+  let invoiceForUse
+  export default {
+    name: 'transport',
+    data () {
+      return {
+        edit1,
+        left,
+        invoiceList: [],
+        isShow: false,
+        isDefault: {},
+        isChose: {},
+        isForDefault: {},
+        rubbish,
+        isForChose: false
+      }
+    },
+    methods: {
+      chose (params) {
+        order.useInvoice(params.item)
+        this.$router.go(-1)
+      },
+      edit (params) {
+        this.$router.push({
+          name: 'o_invoice',
+          query: params.value ? {
+            invoice: JSON.stringify(params.value)
+          } : ''
+        })
+      },
+      deleteInvoice (params) {
+        let _cacheInvoice = order.useInvoice()
+        this.$.get({
+          methodName: 'DeleteInvoice',
+          ids: [params.id]
+        }).then(resp => {
+          // 如果服务当中缓存的订单, 是这个要删除的订单, 就将服务当中的发票信息删除
+          if (_cacheInvoice && _cacheInvoice.id === params.id) {
+            order.useInvoice({})
+          }
+          this.invoiceList = []
+          setTimeout(() => {
+            this.invoiceList = resp.data.invoices
+          }, 10)
+        })
+      },
+      openModel (params) {
+        if (params && params.id) {
+          invoiceForUse = params.id
+          this.isShow = true
+        }
+        if (params === 'true') {
+          this.isShow = false
+          this.deleteInvoice({
+            id: invoiceForUse
+          })
+        }
+        if (!params) {
+          this.isShow = false
+        }
+      }
+    },
+    watch: {
+      isChose (newVal, oldVal) {
+        if (newVal !== oldVal || !oldVal.id) {
+          order.useInvoice(newVal)
+          this.$router.go(-1)
+        }
+      },
+      invoiceList (newVal) {
+        if (newVal.length === 1) {
+          let invoiceCache = newVal[0]
+          if (invoiceCache.isDefault === '0') {
+            invoiceCache.isDefault = '1'
+            this.$.get({
+              invoice: invoiceCache,
+              methodName: 'UpdateInvoice'
+            }).then(resp => {
+              this.isDefault = resp.data.invoices[0]
+            })
+          }
+        }
+      },
+      isForDefault () {
+
+      },
+      isDefault (newVal) {
+        if (newVal.isDefault === '0') {
+          let req = {
+            invoice: {}
+          }
+          Object.assign(req.invoice, newVal)
+          req.invoice.isDefault = '1'
+          req.methodName = 'UpdateInvoice'
+          this.$.get(req).then(resp => {
+            if (resp.data.resultCode === '100') {
+              this.invoiceList = resp.data.invoices
+              this.invoiceList.forEach(val => {
+                if (val.isDefault === '1') {
+                  this.isDefault = val
+                }
+              })
+            }
+          })
+        }
+      }
+    },
+    components: {
+      icarHeader,
+      model,
+      preview,
+      empty,
+      previewItem,
+      scroll
+    },
+    beforeRouteEnter (to, from, next) {
+      Vue.prototype.$.get({
+        methodName: 'ListInvoice'
+      }).then(resp => {
+        next(vm => {
+          let invoice
+          vm.isForChose = to.query.isChose || false
+          vm.invoiceList = []
+          resp.data.invoices.length > 0 && resp.data.invoices.forEach(val => {
+            if (val.isDefault === '1') {
+              vm.isDefault = val
+            }
+            if (from.name === 'o_orderConfirm') {
+              invoice = order.useInvoice()
+              if (val.id === (invoice && invoice.id)) {
+                vm.isChose = invoice
+              }
+            }
+          })
+          vm.$nextTick(() => {
+            vm.invoiceList = resp.data.invoices
+          })
+        })
+      })
+    }
+  }
+</script>
+
+<style>
+  #e_transport .flat-button{
+    width: 94%;
+    margin-left: 3%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  #e_transport .preview_label{
+    margin-top: 0px;
+  }
+
+  #e_transport .preview_item{
+    line-height: 25px;
+  }
+
+  #e_transport .preview_value {
+    color: black;
+  }
+
+  #e_transport .one_way{
+    background-color: #fff;
+    padding: 10px 14px;
+    margin-top: 10px;
+  }
+
+  #e_transport .edit{
+    vertical-align: sub;
+  }
+
+  #e_transport .static {
+   color: #F98700;
+  }
+
+  #e_transport h4 {
+    color: #808080;
+    font-size: 1.2rem;
+    font-weight: normal;
+    margin-bottom: 10px;
+  }
+
+  #e_transport h4 span{
+    margin-left: 20px;
+  }
+
+  #e_transport p {
+    line-height: 20px;
+    color: #8D8D8D;
+    margin-bottom: 10px;
+  }
+
+  #e_transport .panorama_fish_eye{
+    color: #9B9B9B;
+  }
+
+  #e_transport i {
+    font-size: 1.8rem !important;
+  }
+
+  #e_transport label {
+    margin-top: 4px;
+    vertical-align: middle
+  }
+
+  #e_transport .mu-radio-icon {
+    margin-right: 5px;
+  }
+
+  #e_transport .mu-radio-label{
+    color: #8D8D8D;
+    font-size: 1.2rem;
+  }
+
+  #e_transport .launch, #e_transport .delete{
+    color: #AEAEAE;
+    margin-top: 6px;
+    font-weight: lighter;
+  }
+
+  #e_transport .check_circle {
+    color: #F98700;
+  }
+</style>

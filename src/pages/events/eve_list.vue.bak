@@ -1,0 +1,273 @@
+<template>
+  <!--<div>
+    <ul>
+      <li>
+        <router-link to="/eve_groupShopping">
+          <span>团拼购</span>
+        </router-link>
+      </li>
+      <li>
+        <router-link to="/eve_robBuy">
+          <span>N元抢购</span>
+        </router-link>
+      </li>
+      <li>
+        <router-link to="/eve_helpBargain">
+          <span>帮砍价</span>
+        </router-link>
+      </li>
+      <li>
+        <router-link to="/eve_timeSpike">
+          <span>限时抢购</span>
+        </router-link>
+      </li>
+      <li>
+        <router-link to="/eve_robRedPacket">
+        <span>抢红包</span>
+        </router-link>
+      </li>
+      <li>
+        <router-link to="/eve_shakes">
+        <span>摇了摇</span>
+        </router-link>
+      </li>
+      <li>
+        <router-link to="/eve_luckyDraw_two">
+        <span>幸运转盘（圆）</span>
+        </router-link>
+      </li>
+      <li>
+        <router-link to="/eve_luckyDraw">
+        <span>幸运转盘（方）</span>
+        </router-link>
+      </li>
+    </ul>
+  </div>-->
+  <section id="eve_list">
+    <my-header main-text="近期活动" bg-color="#fff" text-color="#000" :isBridge="true">
+      <img slot="" src="../../assets/left-gray.svg">
+    </my-header>
+    <pull-down :getMore="refresh" :allLoaded="allLoaded">
+      <div v-if="activityExtDatas.length != '0'">
+        <div class="eve_body" v-for="avtivity in activityExtDatas"
+             @click="go(avtivity.type, avtivity.id, avtivity.state)">
+          <div class="imgBox"
+               :style="avtivity.cover ?'background-image:url('+addPath(avtivity.cover)+')':'background-image:url('+defaultImgBG+')'">
+            <!--<img :src="avtivity.cover ? addPath(avtivity.cover) : defaultImgBG" alt="" width="100%">-->
+          </div>
+          <h1>{{ avtivity.title }}</h1>
+          <!--<h3 v-html="avtivity.desc "></h3>-->
+          <h3>{{ avtivity.beginDate.split(' ')[0] }} &nbsp; 至 &nbsp;{{ avtivity.endDate.split(' ')[0] }} <label
+            v-if="avtivity.state == 0">即将开始</label><label class="col_yellow" v-if="avtivity.state == 1">进行中</label></h3>
+        </div>
+        <div v-if="!allLoaded" style="width: 100%;height: 35px;text-align: center;line-height: 35px;color: #bdbdbd;">
+          下拉查看更多活动~
+        </div>
+        <div v-if="allLoaded && activityExtDatas.length > 3"
+             style="width: 100%;height: 35px;text-align: center;line-height: 35px;color: #bdbdbd;">
+          我是有底线的~
+        </div>
+      </div>
+      <div v-if="activityExtDatas.length == '0'">
+        <img src="../../assets/default_empty_icon.png" alt="" class="noResult_img">
+        <p class="noResult_p sm_f">暂无相关信息</p>
+      </div>
+    </pull-down>
+    <img :src="picVbeans" width="15px" id="vbeans-img" style="display:none;"/>
+    <img :src="picGoods" width="15px" id="goods-img" style="display:none;"/>
+    <img :src="picCoupon" width="15px" id="coupon-img" style="display:none;"/>
+    <img :src="picOnemore" width="15px" id="more-img" style="display:none;"/>
+    <img :src="picNone" width="15px" id="none-img" style="display:none;"/>
+    <img :src="picCash" width="15px" id="cash-img" style="display:none;"/>
+  </section>
+</template>
+<script>
+  /* eslint-disable */
+  import myHeader from 'components/my-header'
+  import defaultImg from 'assets/default_user_icon.png'
+  import defaultImgBG from 'assets/defaultImg.png'
+
+
+  import pullDown from 'components/loadmore'
+  import { getScrollTop } from 'services/tools.js'
+  import wxBridge from 'lm-th-wx-bridge'
+  import clientInfo from 'lm-se-client-info'
+  import picCash from 'assets/pic_cash.png'
+  import picCoupon from 'assets/pic_coupon.png'
+  import picGoods from 'assets/pic_goods.png'
+  import picNone from 'assets/pic_none.png'
+  import picOnemore from 'assets/pic_onemore.png'
+  import picVbeans from 'assets/pic_vbeans.png'
+  // import scroll from 'components/scroll.vue'
+  let wechatBridge
+
+  //
+
+  let query = {
+    index: 10,
+    count: 5
+  }
+
+  export default {
+    components: {
+      myHeader,
+      pullDown
+    },
+    data () {
+      return {
+        activityExtDatas: [],
+        defaultImg,
+        defaultImgBG,
+        allLoaded: false,
+        picCash: picCash,
+        picCoupon: picCoupon,
+        picGoods: picGoods,
+        picNone: picNone,
+        picOnemore: picOnemore,
+        picVbeans: picVbeans
+      }
+    },
+
+    methods: {
+      go (type, id, state) {
+        let scrollNum = getScrollTop()
+        if (window.localStorage) {
+          console.log(scrollNum)
+          window.localStorage.setItem('offsetTop', scrollNum)
+          window.scrollTo(0, scrollNum)
+        }
+        switch (type) {
+          case '0':
+            this.$router.push({name: 'eve_robRedPacket', params: {activityId: id}})
+            break
+          case '1':
+            this.$router.push({name: 'eve_shakes', params: {activityId: id}})
+            break
+          case '2':
+            main._base({
+              'methodName': 'LotteryInitInfo',
+              'category': '2',
+              'id': id
+            }).then(res => {
+              if (res.data.shape === '0') {
+                this.$router.push({name: 'eve_luckyDraw_two', params: {activityId: id}})
+              } else {
+                this.$router.push({name: 'eve_luckyDraw', params: {activityId: id}})
+              }
+            })
+            break
+          case '3':
+            this.$router.push({name: 'eve_groupShopping', params: {activityId: id}})
+            break
+          case '4':
+            this.$router.push({name: 'eve_robBuy', params: {activityId: id}})
+            break
+          case '5':
+            this.$router.push({name: 'eve_timeSpike', params: {activityId: id}})
+            break
+          case '6':
+            this.$router.push({name: 'eve_helpBargain', params: {activityId: id}})
+            break
+          case '7':
+            this.$router.push({name: 'eve_recommend', params: {activityId: id}})
+            break
+        }
+      },
+      refresh () {
+        main._base({
+          methodName: 'ListActivity',
+          index: query.index,
+          count: query.count
+        }).then(resp => {
+          query.index = query.index + query.count
+          resp.data.activityExtDatas.forEach((element) => {
+            this.activityExtDatas.push(element)
+          }, this)
+          if (resp.data.activityExtDatas.length === 5) {
+            this.allLoaded = false
+          } else {
+            this.allLoaded = true
+          }
+        })
+      }
+    },
+    beforeRouteEnter (to, from, next) {
+      // console.log(clientInfo)
+      next()
+    },
+    mounted () {
+      main._base({
+        methodName: 'ListActivity',
+        index: 0,
+        count: 10
+      }).then(res => {
+        this.activityExtDatas = res.data.activityExtDatas
+        /* eslint-disable */
+      })
+    },
+    activated () {
+      /* eslint-disable */
+      let _offset = window.localStorage.getItem('offsetTop')
+      window.scrollTo(0, _offset)
+    }
+  }
+</script>
+<style>
+  #eve_list .eve_body {
+    width: 90%;
+    margin: auto;
+    min-height: 200px;
+    margin-top: 20px;
+    border-radius: 10px;
+    background-color: #fff;
+    font-weight: 400;
+    padding-bottom: 5px;
+  }
+
+  #eve_list .eve_body h1, #eve_list .eve_body h3 {
+    font-weight: 400;
+  }
+
+  #eve_list .eve_body .imgBox {
+    height: 130px;
+    overflow: hidden;
+    border-radius: 10px;
+    min-width: 288px;
+    padding-top: 45.45%;
+    background-size: cover;
+  }
+
+  #eve_list .eve_body img {
+    min-height: 100px;
+  }
+
+  #eve_list .eve_body h1 {
+    font-size: 18px;
+    margin: 12px 12px;
+    color: #000;
+  }
+
+  #eve_list .eve_body h3 {
+    color: #929292;;
+    font-size: 13px;
+    margin: 12px 12px;
+  }
+
+  #eve_list .eve_body h3 label {
+    float: right;
+  }
+
+  #eve_list .noResult_img {
+    z-index: 9999;
+    top: 50%;
+    left: 50%;
+    width: 50%; /* 按需改变数值 */
+    margin-top: 25%; /* height数值的一半 */
+    margin-left: 25%; /* width数值的一半 */
+  }
+
+  #eve_list .noResult_p {
+    text-align: center;
+    margin-top: 1em;
+  }
+</style>
